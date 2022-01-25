@@ -1,19 +1,41 @@
-modList = [
+monsterList = [
    {
     "name": "red",
-    "type": "red"
+    "hp": "10",
+    "atk": "red",
+    "deff": "asd",
+    "spd": "asd"
   },
   {    
-    "name": "blue",
-    "type": "blue"
+    "name": "red",
+    "hp": "10",
+    "atk": "red",
+    "deff": "asd",
+    "spd": "asd"
   },
   {    
-    "name": "green",
-    "type": "green"}
+    "name": "red",
+    "hp": "10",
+    "atk": "red",
+    "deff": "asd",
+    "spd": "asd"
+  }
 ]
 
-class mod:
-  def __init__(self,name,type):
-    self.name = name
-    self.type = type
+class newMonster:
+  def __init__(self,num):
+    self.name = monsterList[num].name
+    self.hp = monsterList[num].hp
+    self.curhp = monsterList[num].hp
+    self.atf = monsterList[num].atk
+    self.deff = monsterList[num].deff
+    self.spd = monsterList[num].spd
     
+  def showStat(self):
+    return(
+      f"Name : {self.name}\n"
+      f"HP : {self.curhp} / {self.hp}\n"
+      f"ATK : {self.atk}\n"
+      f"DEF : {self.deff}\n"
+      f"SPD : {self.spd}"
+      )
