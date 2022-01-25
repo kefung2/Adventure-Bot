@@ -2,34 +2,38 @@ monsterList = [
    {
     "name": "red",
     "hp": "10",
-    "atk": "red",
-    "deff": "asd",
-    "spd": "asd"
+    "atk": "1",
+    "deff": "1",
+    "spd": "1",
+    "exp": "1"
   },
   {    
     "name": "red",
     "hp": "10",
-    "atk": "red",
-    "deff": "asd",
-    "spd": "asd"
+    "atk": "1",
+    "deff": "1",
+    "spd": "1",
+    "exp": "1"
   },
   {    
     "name": "red",
     "hp": "10",
-    "atk": "red",
-    "deff": "asd",
-    "spd": "asd"
+    "atk": "1",
+    "deff": "1",
+    "spd": "1",
+    "exp": "1"
   }
 ]
 
 class newMonster:
   def __init__(self,num):
     self.name = monsterList[num]['name']
-    self.hp = monsterList[num]['hp']
-    self.curhp = monsterList[num]['hp']
-    self.atk = monsterList[num]['atk']
-    self.deff = monsterList[num]['deff']
-    self.spd = monsterList[num]['spd']
+    self.hp = int(monsterList[num]['hp'])
+    self.curhp = int(monsterList[num]['hp'])
+    self.atk = int(monsterList[num]['atk'])
+    self.deff = int(monsterList[num]['deff'])
+    self.spd = int(monsterList[num]['spd'])
+    self.exp = int(monsterList[num]['exp'])
     
   def showStat(self):
     return(
