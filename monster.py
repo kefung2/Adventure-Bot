@@ -24,12 +24,12 @@ monsterList = [
 
 class newMonster:
   def __init__(self,num):
-    self.name = monsterList[num].name
-    self.hp = monsterList[num].hp
-    self.curhp = monsterList[num].hp
-    self.atf = monsterList[num].atk
-    self.deff = monsterList[num].deff
-    self.spd = monsterList[num].spd
+    self.name = monsterList[num]['name']
+    self.hp = monsterList[num]['hp']
+    self.curhp = monsterList[num]['hp']
+    self.atk = monsterList[num]['atk']
+    self.deff = monsterList[num]['deff']
+    self.spd = monsterList[num]['spd']
     
   def showStat(self):
     return(
@@ -39,3 +39,11 @@ class newMonster:
       f"DEF : {self.deff}\n"
       f"SPD : {self.spd}"
       )
+  
+  def takeDamage(self, damage):
+    self.curhp = self.curhp - damage
+    return(f"You taken -{damage} damage")
+
+
+  def isDead(self):
+    return(self.curhp <= 0)

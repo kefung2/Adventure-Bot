@@ -11,6 +11,7 @@ class newPlayer:
     self.deff = deff
     self.spd = spd
     self.encounter = 0
+    self.exp = 0
 
   def showStat(self):
     return(
@@ -24,3 +25,6 @@ class newPlayer:
   def takeDamage(self, damage):
     self.curhp = self.curhp - damage
     return(f"You taken -{damage} damage")
+
+  def isDead(self):
+    return(self.curhp <= 0)

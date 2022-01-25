@@ -52,7 +52,7 @@ async def on_message(message):
             for i in range(2, len(statList)):
                 statList[i] = int(statList[i])
             print(statList)
-            print(message.author)
+            #print(message.author)
             if statList[2] + statList[3] + statList[4] + statList[5] > 20:
                 await sendBack("stat too high")
             elif statList[2] + statList[3] + statList[4] + statList[5] < 20:
@@ -60,29 +60,49 @@ async def on_message(message):
             elif statList[2] + statList[3] + statList[4] + statList[5] == 20:
                 global curPlayer
                 curPlayer = player.newPlayer(statList[1], statList[2],
-                                          statList[3], statList[4],
-                                          statList[5])
+                                             statList[3], statList[4],
+                                             statList[5])
                 stat = curPlayer.showStat()
                 await sendBack(stat)
 
         # Commed to move / go next
         if msg.startswith('$move'):
-          if curPlayer == None:
-            await sendBack("Please create a Charater first")
-          else:
-            if random.randint(0, 100)%2 == 0:
-              await sendBack("You have encounter a monster")
-              monsterIndex = random.randint(0, len(monster.monsterList))
-              print(monsterIndex)
-              menu = helpMenu()
-              await sendBack(menu)
+            if curPlayer == None:
+                await sendBack("Please create a Charater first")
             else:
-              await sendBack("You have encounter a merchant")
+                if random.randint(0, 100) % 2 == 0:
+                    await sendBack("You have encounter a monster")
+                    #TO-DO: ADD BOSS AFTER 10 ENCOUNTER
+                    #pending boss fight
+                    curPlayer.encounter+=1
+                    #print(curPlayer.encounter)
+                    monsterIndex = random.randint(0, len(monster.monsterList)-1)
+                    #print(monsterIndex)
+                    curMob = monster.newMonster(monsterIndex)
+                    stat = curMob.showStat()
+                    await sendBack(stat)
+                else:
+                    await sendBack("You have encounter a merchant")
 
         # Commend to fight
         if msg.startswith('$fight'):
-            menu = helpMenu()
-            await sendBack(menu)
+          if curMob == None:
+            await sendBack("There is no monster to fight")
+          else:
+            # Check who have higher speed to go first
+            if curPlayer.spd > curMob.spd:
+              playerDamage = curPlayer.atk - curMob.deff
+              #if Monster Defend is too high, you will always do 1 damage and vice versa
+              if playerDamage < 0:
+                playerDamage = 1
+              curMob.takeDamage(playerDamage)
+              if curMob.isDead():
+                await sendBack("You killed the monster")
+
+            else:
+              await sendBack("There is a monster to fight")
+
+
 
         # Commend to run from fight
         if msg.startswith('$run'):
