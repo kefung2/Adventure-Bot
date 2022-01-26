@@ -51,3 +51,5 @@ class newMonster:
 
   def isDead(self):
     return(self.curhp <= 0)
+
+  ## Getter / Setter

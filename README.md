@@ -6,12 +6,13 @@ Need -
 - Implentment Shop
 - Game Story
 - Monster/Item Data
+- test_branch test
 
 Want -
 - Magic
 - Gold
 - Boss
-- Unlimited run with scal on difficulty 
+- Unlimited run with scale on difficulty 
 
 
 *This is my first project using Replit and python*
