@@ -54,11 +54,12 @@ async def on_message(message):
         global gameState
         gameState = True
         await sendBack("Starting")
+        await sendBack("Play story")
         print(gameState)
 
     #following commend only work if the game has begin
-    #if bool(gameState):
-    if True:
+    if bool(gameState):
+    #if True:
         # Commend to see menu
         if msg.startswith('$newPlayer'):
             statList = msg.split()
@@ -102,6 +103,7 @@ async def on_message(message):
                 else:
                     await sendBack("You have encounter a merchant")
                     curPlayer.encounter += 1
+                    
 
         # Commend to fight
         if msg.startswith('$fight'):

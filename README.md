@@ -6,7 +6,9 @@ Need -
 - Implentment Shop
 - Game Story
 - Monster/Item Data
-- test_branch test
+- Block player to create more then 1 charater
+- Function if chara exsite before using some comment
+- Update class to have getting to setter to change value
 
 Want -
 - Magic
