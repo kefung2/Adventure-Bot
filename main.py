@@ -278,6 +278,8 @@ async def on_message(message):
 
             # Commend to buy item
             if msg.startswith('$buy'):
+                if(curShop == None):
+                    await sendBack("There is nothing to buy, use $move to continue your journey")
                 atkvalue=curShop.getAttack()
                 defvalue=curShop.getDeffence()
                 healvalue=curShop.getRecovery()
@@ -296,6 +298,9 @@ async def on_message(message):
                     stat=curPlayer.showStat()
                     await sendBack(stat)
                     await sendBack("Good luck on your adventure")
+                    del curShop
+                    curShop = None
+                    
                         
                 if(item == 2):
                     await sendBack(f"Increase defense stat by {defvalue}")
@@ -303,6 +308,8 @@ async def on_message(message):
                     stat=curPlayer.showStat()
                     await sendBack(stat)
                     await sendBack("Good luck on your adventure")
+                    del curShop
+                    curShop = None
 
 
                 if(item == 3):
@@ -311,6 +318,8 @@ async def on_message(message):
                     stat=curPlayer.showStat()
                     await sendBack(stat)
                     await sendBack("Good luck on your adventure")
+                    del curShop
+                    curShop = None
 
                 
 
@@ -358,4 +367,4 @@ async def on_message(message):
 #keep_alive()
 #client.run(os.environ['TOKEN'])
 
-client.run('OTM1MjkzOTUxMjM2MjU1Nzk0.Ye8iXg.qI-GzT4BaD3ofOokd4FTpeubaHI')
+client.run('OTM1MjkzOTUxMjM2MjU1Nzk0.Ye8iXg.iNat2kO1O-_LxFsTP6Qf47On2Q8')
