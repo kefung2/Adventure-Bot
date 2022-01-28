@@ -3,19 +3,19 @@
 ### TO-DO 
 
 Need -
-- Implentment Shop
-- Game Story
-- Monster/Item Data
-- Block player to create more then 1 charater
-- Function if chara exsite before using some comment
-- Update class to have getting to setter to change value
+- [ ] Implentment Shop
+- [x] Game Story
+- [ ] Monster/Item Data
+- [x] Block player to create more then 1 charater
+- [x] stop user from using some commend beforre creating a charater
+- [ ] Update class to have getting to setter to change value
 
 Want -
-- Magic
-- Gold
-- Boss
-- Unlimited run with scale on difficulty 
-- equipment with special effect
+- [ ] Magic
+- [ ] Gold
+- [ ] Boss
+- [ ] Unlimited run with scale on difficulty 
+- [ ] Equipment with special effect
 
 
 *This is my first project using Replit and python*

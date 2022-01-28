@@ -18,34 +18,35 @@ armorList = [
   
   {
     "itemName" : "Helmet",
-    "Value" : 2
+    "value" : 2
   }
 ]
 
 healingList = [
   {
     "itemName" : "Potion",
-    "Value" : 1
+    "value" : 1
   },
 
   {
     "itemName" : "Medkit",
-    "Value" : 3
+    "value" : 3
   }
 ]
 
-class NewWeapon:
-  def __init__(self,num):
-    self.value = weaponList[num]['value']
+class NewShop:
+  def __init__(self, atk, deff, heal):
+    self.atk = weaponList[atk]['value']
+    self.deff = armorList[deff]['value']
+    self.heal = healingList[heal]['value']
 
-class NewArmor:
-  def __init__(self, num):
-    self.value = armorList[num]['value']
-
-class NewHealing:
-  def __init__ (self ,num):
-    self.value = healingList[num]['value']
-
+  def showValue(self):
+    return(
+      f"attack : {self.atk}"
+      f"defense : {self.deff}"
+      f"healing : {self.heal}"
+    )
+    
 
 """
 offName

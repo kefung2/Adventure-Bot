@@ -5,6 +5,13 @@ import player
 import shop
 import random
 from keep_alive import keep_alive
+import requests
+
+r = requests.head(url="https://discord.com/api/v1")
+try:
+    print(f"Rate limit {int(r.headers['Retry-After']) / 60} minutes left")
+except:
+    print("No rate limit")
 
 client = discord.Client()
 
@@ -18,7 +25,7 @@ previousEnc = -1
 
 def helpMenu():
     return (
-        "Menu \n"
+        " - - - - - Menu - - - - -\n"
         "$start : Begin the game\n"
         "$newPlayer : Use the commend to create a new charater in the following order and stat should sum up to 20: $newPlayer [name] [hp] [attack] [defend] [speed] \n"
         "$move : move the charater forward with 50% chance of seeing a monster or merchant \n"
@@ -27,7 +34,7 @@ def helpMenu():
         "$buy : buy item in shop: $buy [item in slot]\n"
         "$monStat : see the current monster stat\n"
         "$stat : see your oown current stat\n"
-        "$levelUp: Use this Comment to level up. Every 8 exp point give you a level, which give you more stat\n"
+        "$levelUp : Use this Comment to level up. Every 8 exp point give you a level, which give you more stat\n"
         "$reset : reset the whole world\n"
         "$end : end the game\n")
 
@@ -114,6 +121,7 @@ async def on_message(message):
         story = playStory()
         await sendBack(story)
         await sendBack("Please tell us about yourself Hero")
+        return
         print(gameState)
 
     #following commend only work if the game has begin
@@ -121,29 +129,32 @@ async def on_message(message):
     if True:
         # Commend to see menu
         if msg.startswith('$newPlayer'):
-            try:
-                statList = msg.split()
-                for i in range(2, len(statList)):
-                    statList[i] = int(statList[i])
-                print(statList)
-                #print(message.author)
-                if statList[2] + statList[3] + statList[4] + statList[5] > 20:
-                    await sendBack("stat too high")
-                elif statList[2] + statList[3] + statList[4] + statList[5] < 20:
-                    await sendBack("you still have stat point to use")
-                elif statList[2] + statList[3] + statList[4] + statList[
-                        5] == 20:
-                    global curPlayer
-                    curPlayer = player.newPlayer(statList[1], statList[2],
-                                                 statList[3], statList[4],
-                                                 statList[5])
-                    stat = curPlayer.showStat()
-                    await sendBack(stat)
-            except:
-                await sendBack(
-                    "Please follow the format $newPlayer [name] [hp] [attack] [defend] [speed]"
-                )
-                return
+            global curPlayer
+            if not(curPlayer == None):
+              await sendBack("I already know about you, Hero")
+            else:
+              try:
+                  statList = msg.split()
+                  for i in range(2, len(statList)):
+                      statList[i] = int(statList[i])
+                  print(statList)
+                  #print(message.author)
+                  if statList[2] + statList[3] + statList[4] + statList[5] > 20:
+                      await sendBack("stat too high")
+                  elif statList[2] + statList[3] + statList[4] + statList[5] < 20:
+                      await sendBack("you still have stat point to use")
+                  elif statList[2] + statList[3] + statList[4] + statList[
+                          5] == 20:
+                      curPlayer = player.newPlayer(statList[1], statList[2],
+                                                  statList[3], statList[4],
+                                                  statList[5])
+                      stat = curPlayer.showStat()
+                      await sendBack(stat)
+              except:
+                  await sendBack(
+                      "Please follow the format $newPlayer [name] [hp] [attack] [defend] [speed]"
+                  )
+                  return
 
         if bool(checkPlayerCreation()):
             # Commed to move / go next
@@ -174,10 +185,17 @@ async def on_message(message):
                     else:
                         await sendBack("You have encounter a merchant")
                         curPlayer.encounterUp()
+                        
                         item1 = random.randint(0, len(shop.weaponList) -1 )
                         item2 = random.randint(0, len(shop.armorList) -1 )
                         item3 = random.randint(0, len(shop.healingList) -1 )
-                        await sendBack()
+
+                        curShop = shop.NewShop(item1, item2, item3)
+                        #firstitem = item1.showValue()
+                        #seconditem = item2.showValue()
+                        #thirditem = item3.showValue()
+                        await sendBack(curShop.showValue())
+                        
 
             # Commend to fight
             if msg.startswith('$fight'):
@@ -244,11 +262,14 @@ async def on_message(message):
                             await sendBack(stat)
                             del curMob
                             curMob = None
-                    if not (curPlayer.isDead()) and not (curMob.isDead()):
-                        stat1 = curPlayer.showStat()
-                        await sendBack(stat1)
-                        stat2 = curMob.showStat()
-                        await sendBack(stat2)
+                    try:
+                      if not (curPlayer.isDead()) and not (curMob.isDead()):
+                          stat1 = curPlayer.showStat()
+                          await sendBack(stat1)
+                          stat2 = curMob.showStat()
+                          await sendBack(stat2)
+                    except:
+                      pass
 
             # Commend to run from fight
             if msg.startswith('$run'):
