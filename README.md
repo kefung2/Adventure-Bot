@@ -15,6 +15,7 @@ Want -
 - Gold
 - Boss
 - Unlimited run with scale on difficulty 
+- equipment with special effect
 
 
 *This is my first project using Replit and python*

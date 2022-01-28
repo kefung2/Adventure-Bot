@@ -13,15 +13,33 @@ gameState = False
 curMob = None
 curShop = None
 curPlayer = None
+previousEnc = -1
 
 
 def helpMenu():
-    return ("Coming Soon \n" "Please wait")
+    return (
+        "Menu \n"
+        "$start : Begin the game\n"
+        "$newPlayer : Use the commend to create a new charater in the following order and stat should sum up to 20: $newPlayer [name] [hp] [attack] [defend] [speed] \n"
+        "$move : move the charater forward with 50% chance of seeing a monster or merchant \n"
+        "$fight : fight the monster\n"
+        "$run : run away from the monster\n"
+        "$buy : buy item in shop: $buy [item in slot]\n"
+        "$monStat : see the current monster stat\n"
+        "$stat : see your oown current stat\n"
+        "$levelUp: Use this Comment to level up. Every 8 exp point give you a level, which give you more stat\n"
+        "$reset : reset the whole world\n"
+        "$end : end the game\n")
+
+
+def playStory():
+    return ("In the kingdom of Nakiri, there is a princess name Ayame, who is crownd the most beautiful lady in the kingdom. One day the Demon King Teemo, has caught eye on the princess, and kidnap her away. The king has summon a hero from a different world in order to save his daughter. Now hero your jounery has begin.")
 
 
 def endgame():
     global curPlayer
     global gameState
+    global previousEnc
 
     del curPlayer
 
@@ -29,6 +47,44 @@ def endgame():
     curMob = None
     curShop = None
     curPlayer = None
+    previousEnc = -1
+
+
+def checkPlayerCreation():
+    if curPlayer == None:
+        return False
+    else:
+        return True
+
+
+def checkMobalive():
+    if curMob == None:
+        print("false")
+        return False
+    else:
+        print("true")
+        return True
+
+
+def randomEncounter():
+    roll = random.randint(0, 100) % 2 == 0
+    # global previousEnc
+    # print(f"previousEnc = {previousEnc}")
+    if roll == 0:
+        global previousEnc
+        if previousEnc == 0:
+            return random.randint(0, 100) % 2
+        else:
+            #global previousEnc
+            previousEnc = 0
+            return 0
+    else:
+        if previousEnc == 1:
+            return random.randint(0, 100) % 2
+        else:
+            #global previousEnc
+            previousEnc = 1
+            return 1
 
 
 @client.event
@@ -48,148 +104,200 @@ async def on_message(message):
     if msg.startswith('$help'):
         menu = helpMenu()
         await sendBack(menu)
+        return
 
     # Commend to start the game
     if msg.startswith('$start'):
         global gameState
         gameState = True
         await sendBack("Starting")
-        await sendBack("Play story")
+        story = playStory()
+        await sendBack(story)
+        await sendBack("Please tell us about yourself Hero")
         print(gameState)
 
     #following commend only work if the game has begin
-    if bool(gameState):
-    #if True:
+    #if bool(gameState):
+    if True:
         # Commend to see menu
         if msg.startswith('$newPlayer'):
-            statList = msg.split()
-            for i in range(2, len(statList)):
-                statList[i] = int(statList[i])
-            print(statList)
-            #print(message.author)
-            if statList[2] + statList[3] + statList[4] + statList[5] > 20:
-                await sendBack("stat too high")
-            elif statList[2] + statList[3] + statList[4] + statList[5] < 20:
-                await sendBack("you still have stat point to use")
-            elif statList[2] + statList[3] + statList[4] + statList[5] == 20:
-                global curPlayer
-                curPlayer = player.newPlayer(statList[1], statList[2],
-                                             statList[3], statList[4],
-                                             statList[5])
-                stat = curPlayer.showStat()
-                await sendBack(stat)
-
-        # Commed to move / go next
-        if msg.startswith('$move'):
-            if curPlayer == None:
-                await sendBack("Please create a Charater first")
-            else:
-                if curPlayer.encounter == 10:
-                    await sendBack("Thank you for playing!")
-
-                if random.randint(0, 100) % 2 == 0:
-                    await sendBack("You have encounter a monster")
-                    #TO-DO: ADD BOSS AFTER 10 ENCOUNTER
-                    #pending boss fight
-                    curPlayer.encounter += 1
-                    #print(curPlayer.encounter)
-                    monsterIndex = random.randint(0,
-                                                  len(monster.monsterList) - 1)
-                    #print(monsterIndex)
-                    global curMob
-                    curMob = monster.newMonster(monsterIndex)
-                    stat = curMob.showStat()
+            try:
+                statList = msg.split()
+                for i in range(2, len(statList)):
+                    statList[i] = int(statList[i])
+                print(statList)
+                #print(message.author)
+                if statList[2] + statList[3] + statList[4] + statList[5] > 20:
+                    await sendBack("stat too high")
+                elif statList[2] + statList[3] + statList[4] + statList[5] < 20:
+                    await sendBack("you still have stat point to use")
+                elif statList[2] + statList[3] + statList[4] + statList[
+                        5] == 20:
+                    global curPlayer
+                    curPlayer = player.newPlayer(statList[1], statList[2],
+                                                 statList[3], statList[4],
+                                                 statList[5])
+                    stat = curPlayer.showStat()
                     await sendBack(stat)
-                else:
-                    await sendBack("You have encounter a merchant")
-                    curPlayer.encounter += 1
-                    
+            except:
+                await sendBack(
+                    "Please follow the format $newPlayer [name] [hp] [attack] [defend] [speed]"
+                )
+                return
 
-        # Commend to fight
-        if msg.startswith('$fight'):
-            if curMob == None:
-                await sendBack("There is no monster to fight")
-            else:
-                print("Checking Speed")
-                print(curPlayer.spd > curMob.spd)
-                # Check who have higher speed to go first
-                if curPlayer.spd > curMob.spd:
-                    playerDamage = curPlayer.atk - curMob.deff
-                    #if Monster Defend is too high, you will always do 1 damage and vice versa
-                    print("Damage: ", playerDamage)
-                    if playerDamage < 0:
-                        playerDamage = 1
-                    curMob.takeDamage(playerDamage)
-                    if curMob.isDead():
-                        await sendBack("You killed the monster")
-                        #global curMob
-                        curPlayer.exp = curPlayer.exp + curMob.exp
-                        del curMob
-                        curMob = None
+        if bool(checkPlayerCreation()):
+            # Commed to move / go next
+
+            if msg.startswith('$move'):
+                if bool(checkMobalive()):
+                    await sendBack(
+                        "Monster is blocking your way, fight it or run from it"
+                    )
+                else:
+                    if curPlayer.getEncounter() == 10:
+                        await sendBack("Thank you for playing!")
+
+                    if randomEncounter() == 0:
+                        await sendBack("You have encounter a monster")
+                        #TO-DO: ADD BOSS AFTER 10 ENCOUNTER
+                        #pending boss fight
+                        curPlayer.encounterUp()
+                        #print(curPlayer.encounter)
+                        monsterIndex = random.randint(
+                            0,
+                            len(monster.monsterList) - 1)
+                        #print(monsterIndex)
+                        global curMob
+                        curMob = monster.newMonster(monsterIndex)
+                        stat = curMob.showStat()
+                        await sendBack(stat)
                     else:
-                        monsterDamage = curMob.atk - curPlayer.deff
+                        await sendBack("You have encounter a merchant")
+                        curPlayer.encounterUp()
+                        item1 = random.randint(0, len(shop.weaponList) -1 )
+                        item2 = random.randint(0, len(shop.armorList) -1 )
+                        item3 = random.randint(0, len(shop.healingList) -1 )
+                        await sendBack()
+
+            # Commend to fight
+            if msg.startswith('$fight'):
+                if curMob == None:
+                    await sendBack("There is no monster to fight")
+                else:
+                    print("Checking Speed")
+                    print(curPlayer.getSPD() > curMob.getSPD())
+                    # Check who have higher speed to go first
+                    if curPlayer.getSPD() > curMob.getSPD():
+                        playerDamage = curPlayer.getATK() - curMob.getDEF()
+                        #if Monster Defend is too high, you will always do 1 damage and vice versa
+                        print("Damage: ", playerDamage)
+                        if playerDamage < 0:
+                            playerDamage = 1
+                        curMob.takeDamage(playerDamage)
+                        await sendBack(f"You did {playerDamage} damage")
+                        if curMob.isDead():
+                            await sendBack("You killed the monster")
+                            curPlayer.gainEXP(curMob.getEXP())
+                            expGain = curMob.getEXP()
+                            await sendBack(f"You gain {expGain} exp")
+                            stat = curPlayer.showStat()
+                            await sendBack(stat)
+                            del curMob
+                            curMob = None
+                        else:
+                            monsterDamage = curMob.getATK() - curPlayer.getDEF(
+                            )
+                            if monsterDamage < 0:
+                                monsterDamage = 1
+                            curPlayer.takeDamage(monsterDamage)
+                            await sendBack(
+                                f"Monster fight back, and you took {monsterDamage} damage"
+                            )
+                            if curPlayer.isDead():
+                                await sendBack("YOU ARE DEAD!!!")
+                                endgame()
+                    else:
+                        monsterDamage = curMob.getATK() - curPlayer.getDEF()
                         if monsterDamage < 0:
                             monsterDamage = 1
                         curPlayer.takeDamage(monsterDamage)
+                        await sendBack(
+                            f"The Monster attack, and you took {monsterDamage} damage"
+                        )
                         if curPlayer.isDead():
                             await sendBack("YOU ARE DEAD!!!")
                             endgame()
+                        playerDamage = curPlayer.getATK() - curMob.getDEF()
+                        #if Monster Defend is too high, you will always do 1 damage and vice versa
+                        if playerDamage < 0:
+                            playerDamage = 1
+                        curMob.takeDamage(playerDamage)
+                        await sendBack(
+                            f"You fight back and did {playerDamage} damage back"
+                        )
+                        if curMob.isDead():
+                            await sendBack("You killed the monster")
+                            curPlayer.gainEXP(curMob.getEXP())
+                            expGain = curMob.getEXP()
+                            await sendBack(f"You gain {expGain} exp")
+                            stat = curPlayer.showStat()
+                            await sendBack(stat)
+                            del curMob
+                            curMob = None
+                    if not (curPlayer.isDead()) and not (curMob.isDead()):
+                        stat1 = curPlayer.showStat()
+                        await sendBack(stat1)
+                        stat2 = curMob.showStat()
+                        await sendBack(stat2)
 
+            # Commend to run from fight
+            if msg.startswith('$run'):
+                menu = helpMenu()
+                await sendBack(menu)
+
+            # Commend to buy item
+            if msg.startswith('$buy'):
+                try:
+                    item = int(msg.split("$buy", 1)[1])
+                    await sendBack(item)
+                except:
+                    await sendBack("Please pick 1 item only")
+
+            # Commend to see current monster stat
+            if msg.startswith('$monStat'):
+                stat = curMob.showStat()
+                await sendBack(stat)
+
+            #commend to see yoour stat
+            if msg.startswith('$stat'):
+                stat = curPlayer.showStat()
+                await sendBack(stat)
+
+            #commend to see Level up
+            if msg.startswith('$levelUp'):
+                if curPlayer.getEXP() >= 8:
+                    await sendBack("You level Up")
+                    curPlayer.levelUp()
+                    stat = curPlayer.showStat()
+                    await sendBack(stat)
                 else:
-                    monsterDamage = curMob.atk - curPlayer.deff
-                    if monsterDamage < 0:
-                        monsterDamage = 1
-                    curPlayer.takeDamage(monsterDamage)
-                    if curPlayer.isDead():
-                        await sendBack("YOU ARE DEAD!!!")
-                        endgame()
-                    playerDamage = curPlayer.atk - curMob.deff
-                    #if Monster Defend is too high, you will always do 1 damage and vice versa
-                    if playerDamage < 0:
-                        playerDamage = 1
-                    curMob.takeDamage(playerDamage)
-                    if curMob.isDead():
-                        await sendBack("You killed the monster")
-                        curPlayer.exp = curPlayer.exp + curMob.exp
-                        global curmob
-                        del curMob
-                        curMob = None
+                    await sendBack("Not enough exp to level up")
 
-        # Commend to run from fight
-        if msg.startswith('$run'):
-            menu = helpMenu()
-            await sendBack(menu)
+            # Comment to reset everything
+            if msg.startswith('$reset'):
+                await sendBack("resetting...")
+                endgame()
+                global gamestate
+                gameState = True
 
-        # Commend to buy item
-        if msg.startswith('$buy'):
-            try:
-                item = int(msg.split("$buy", 1)[1])
-                await sendBack(item)
-            except:
-                await sendBack("Please pick 1 item only")
-
-        # Commend to see current monster stat
-        if msg.startswith('$monStat'):
-            menu = helpMenu()
-            await sendBack(menu)
-
-        #commend to see yoour stat
-        if msg.startswith('$stat'):
-            stat = curPlayer.showStat()
-            await sendBack(stat)
-            print(stat)
-
-        # Comment to reset everything
-        if msg.startswith('$reset'):
-            menu = helpMenu()
-            await sendBack(menu)
-
-        # Commend to end the game
-        if msg.startswith('$end'):
-            #global gameState
-            gameState = False
-            await sendBack("Ending")
-            print(gameState)
+            # Commend to end the game
+            if msg.startswith('$end'):
+                #global gameState
+                endgame()
+                await sendBack("Ending")
+                print(gameState)
+        else:
+            await sendBack("Please tell me about yourself")
     else:
         await sendBack(
             "Please check the menu with $help first before starting the game")
