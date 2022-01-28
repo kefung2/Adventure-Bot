@@ -25,7 +25,7 @@ monsterList = [
   }
 ]
 
-class newMonster:
+class NewMonster:
   def __init__(self,num):
     self.name = monsterList[num]['name']
     self.hp = monsterList[num]['hp']

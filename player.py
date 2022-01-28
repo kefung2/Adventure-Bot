@@ -1,4 +1,4 @@
-class newPlayer:
+class NewPlayer:
   
   def __init__(self):
     pass

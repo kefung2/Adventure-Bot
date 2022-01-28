@@ -4,14 +4,14 @@ import monster
 import player
 import shop
 import random
-from keep_alive import keep_alive
-import requests
+#from keep_alive import keep_alive
+# import requests
 
-r = requests.head(url="https://discord.com/api/v1")
-try:
-    print(f"Rate limit {int(r.headers['Retry-After']) / 60} minutes left")
-except:
-    print("No rate limit")
+# r = requests.head(url="https://discord.com/api/v1")
+# try:
+#     print(f"Rate limit {int(r.headers['Retry-After']) / 60} minutes left")
+# except:
+#     print("No rate limit")
 
 client = discord.Client()
 
@@ -64,7 +64,7 @@ def checkPlayerCreation():
         return True
 
 
-def checkMobalive():
+def checkMobAlive():
     if curMob == None:
         print("false")
         return False
@@ -145,7 +145,7 @@ async def on_message(message):
                       await sendBack("you still have stat point to use")
                   elif statList[2] + statList[3] + statList[4] + statList[
                           5] == 20:
-                      curPlayer = player.newPlayer(statList[1], statList[2],
+                      curPlayer = player.NewPlayer(statList[1], statList[2],
                                                   statList[3], statList[4],
                                                   statList[5])
                       stat = curPlayer.showStat()
@@ -160,7 +160,7 @@ async def on_message(message):
             # Commed to move / go next
 
             if msg.startswith('$move'):
-                if bool(checkMobalive()):
+                if bool(checkMobAlive()):
                     await sendBack(
                         "Monster is blocking your way, fight it or run from it"
                     )
@@ -179,7 +179,7 @@ async def on_message(message):
                             len(monster.monsterList) - 1)
                         #print(monsterIndex)
                         global curMob
-                        curMob = monster.newMonster(monsterIndex)
+                        curMob = monster.NewMonster(monsterIndex)
                         stat = curMob.showStat()
                         await sendBack(stat)
                     else:
@@ -324,5 +324,5 @@ async def on_message(message):
             "Please check the menu with $help first before starting the game")
 
 
-keep_alive()
-client.run(os.environ['TOKEN'])
+#keep_alive()
+#client.run(os.environ['TOKEN'])
