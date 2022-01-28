@@ -23,6 +23,7 @@ curPlayer = None
 previousEnc = -1
 
 
+
 def helpMenu():
     return (
         " - - - - - Menu - - - - -\n"
@@ -74,7 +75,7 @@ def checkMobAlive():
 
 
 def randomEncounter():
-    roll = random.randint(0, 100) % 2 == 0
+    roll = random.randint(0, 100) % 2 ==0
     # global previousEnc
     # print(f"previousEnc = {previousEnc}")
     if roll == 0:
@@ -189,12 +190,11 @@ async def on_message(message):
                         item1 = random.randint(0, len(shop.weaponList) -1 )
                         item2 = random.randint(0, len(shop.armorList) -1 )
                         item3 = random.randint(0, len(shop.healingList) -1 )
-
+                        global curShop
                         curShop = shop.NewShop(item1, item2, item3)
-                        #firstitem = item1.showValue()
-                        #seconditem = item2.showValue()
-                        #thirditem = item3.showValue()
-                        await sendBack(curShop.showValue())
+                        values = curShop.showValue()
+                        await sendBack(values)
+
                         
 
             # Commend to fight
@@ -278,16 +278,47 @@ async def on_message(message):
 
             # Commend to buy item
             if msg.startswith('$buy'):
+                atkvalue=curShop.getAttack()
+                defvalue=curShop.getDeffence()
+                healvalue=curShop.getRecovery()
+
+
                 try:
                     item = int(msg.split("$buy", 1)[1])
-                    await sendBack(item)
+                    await sendBack(f"You chose item {item}")
+
                 except:
                     await sendBack("Please pick 1 item only")
+
+                if(item == 1):
+                    await sendBack(f"Increase attack stat by {atkvalue}")
+                    curPlayer.setAtk(atkvalue)
+                    stat=curPlayer.showStat()
+                    await sendBack(stat)
+                    await sendBack("Good luck on your adventure")
+                        
+                if(item == 2):
+                    await sendBack(f"Increase defense stat by {defvalue}")
+                    curPlayer.setDef(defvalue)
+                    stat=curPlayer.showStat()
+                    await sendBack(stat)
+                    await sendBack("Good luck on your adventure")
+
+
+                if(item == 3):
+                    await sendBack(f"Hp increase by {healvalue}")
+                    curPlayer.setHp(healvalue)
+                    stat=curPlayer.showStat()
+                    await sendBack(stat)
+                    await sendBack("Good luck on your adventure")
+
+                
 
             # Commend to see current monster stat
             if msg.startswith('$monStat'):
                 stat = curMob.showStat()
                 await sendBack(stat)
+
 
             #commend to see yoour stat
             if msg.startswith('$stat'):
@@ -326,3 +357,5 @@ async def on_message(message):
 
 #keep_alive()
 #client.run(os.environ['TOKEN'])
+
+client.run('OTM1MjkzOTUxMjM2MjU1Nzk0.Ye8iXg.qI-GzT4BaD3ofOokd4FTpeubaHI')

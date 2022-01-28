@@ -1,7 +1,7 @@
 monsterList = [
    {
     "name": "Slime",
-    "hp": 1,
+    "hp": 10,
     "atk": 1,
     "deff": 1,
     "spd": 1,
@@ -9,15 +9,15 @@ monsterList = [
   },
   {    
     "name": "red",
-    "hp": 1,
+    "hp": 10,
     "atk": 1,
     "deff": 1,
     "spd": 1,
     "exp": 1
   },
   {    
-    "name": "red",
-    "hp": 1,
+    "name": "blue",
+    "hp": 9,
     "atk": 1,
     "deff": 1,
     "spd": 1,

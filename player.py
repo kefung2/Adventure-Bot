@@ -61,3 +61,15 @@ class NewPlayer:
     self.atk += 1
     self.deff += 1
     self.spd += 1 
+
+  def setAtk(self, update):
+    self.atk += update
+
+  def setDef(self, update):
+    self.deff += update
+
+  def setHp(self, update):
+    
+    self.curhp += update
+    if(self.curhp > self.hp):
+      self.curhp = self.hp
