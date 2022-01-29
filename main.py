@@ -273,8 +273,50 @@ async def on_message(message):
 
             # Commend to run from fight
             if msg.startswith('$run'):
-                menu = helpMenu()
-                await sendBack(menu)
+                if curMob == None:
+                    await sendBack("There is nothing to escape from...")
+
+                else:
+                    playerSpeed = curPlayer.getSPD()
+                    monsterSpeed = curMob.getSPD()
+
+                    playercounter = 0
+                    monstercounter = 0
+
+                    x = 0
+                    y = 0
+                    
+                    while(playerSpeed > x):
+                        rollvalue = random.randint(1,10)
+                        #await sendBack(f"your speed is {playerSpeed}")
+                        #await sendBack(f"i is {i}")
+                        #await sendBack(f"you roll {rollvalue}")
+                        if rollvalue > 8 :
+                            playercounter += 1
+                        #await sendBack(f"your final value {playercounter}")
+                        x += 1
+
+                    while(monsterSpeed > y):
+                        rollvalue = random.randint(1,10)
+                        #await sendBack(f"monster roll {rollvalue}")
+                        if rollvalue > 8 :
+                            monstercounter += 1
+                        #await sendBack(f"monster final value {monstercounter}")
+                        y += 1
+
+                    if playercounter > monstercounter :
+                        await sendBack("Successfully escape!")
+                        del curMob
+                        curMob = None
+
+                    else:
+                        await sendBack("Fail to escape!")
+                        dmgtaken = curMob.getATK()
+                        await sendBack(f"You took {dmgtaken} damage")
+                        curPlayer.takeDamage(dmgtaken)
+                        if curPlayer.isDead():
+                            await sendBack("YOU ARE DEAD!!!")
+                            endgame()
 
             # Commend to buy item
             if msg.startswith('$buy'):
@@ -367,3 +409,4 @@ async def on_message(message):
 #keep_alive()
 #client.run(os.environ['TOKEN'])
 
+client.run('OTM1MjkzOTUxMjM2MjU1Nzk0.Ye8iXg.xrnHKWlwwqzfEOUbrUjwz89JDyE')

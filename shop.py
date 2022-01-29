@@ -12,6 +12,16 @@ weaponList = [
   {
     "itemName" : "Lance",
     "value" : 3
+  },
+
+  {
+    "itemName" : "Greatsword",
+    "value" : 5
+  },
+
+  {
+    "itemName" : "Shotgun",
+    "value" : 10
   }
 
   
@@ -31,6 +41,11 @@ armorList = [
   {
     "itemName" : "Shield",
     "value" : 3
+  },
+
+  {
+    "itemName" : "Breastplate",
+    "value" : 5
   }
   
 ]
