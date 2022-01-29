@@ -45,9 +45,7 @@ def playStory():
 
 
 def endgame():
-    global curPlayer
-    global gameState
-    global previousEnc
+    global curPlayer, curMob, curShop, gameState, previousEnc
 
     del curPlayer
 
@@ -72,6 +70,22 @@ def checkMobAlive():
     else:
         print("true")
         return True
+
+def playerDamageCheck():
+    playerDamage = curPlayer.getATK() - curMob.getDEF()
+    #if Monster Defend is too high, you will always do 1 damage and vice versa
+    print("Damage: ", playerDamage)
+    if playerDamage < 0:
+        playerDamage = 1
+    curMob.takeDamage(playerDamage)
+    return playerDamage
+
+def monsterDamageCheck():
+    monsterDamage = curMob.getATK() - curPlayer.getDEF()
+    if monsterDamage < 0:
+        monsterDamage = 1
+    curPlayer.takeDamage(monsterDamage)
+    return monsterDamage
 
 
 def randomEncounter():
@@ -206,12 +220,7 @@ async def on_message(message):
                     print(curPlayer.getSPD() > curMob.getSPD())
                     # Check who have higher speed to go first
                     if curPlayer.getSPD() > curMob.getSPD():
-                        playerDamage = curPlayer.getATK() - curMob.getDEF()
-                        #if Monster Defend is too high, you will always do 1 damage and vice versa
-                        print("Damage: ", playerDamage)
-                        if playerDamage < 0:
-                            playerDamage = 1
-                        curMob.takeDamage(playerDamage)
+                        playerDamage = playerDamageCheck()
                         await sendBack(f"You did {playerDamage} damage")
                         if curMob.isDead():
                             await sendBack("You killed the monster")
@@ -223,11 +232,7 @@ async def on_message(message):
                             del curMob
                             curMob = None
                         else:
-                            monsterDamage = curMob.getATK() - curPlayer.getDEF(
-                            )
-                            if monsterDamage < 0:
-                                monsterDamage = 1
-                            curPlayer.takeDamage(monsterDamage)
+                            monsterDamage = monsterDamageCheck()
                             await sendBack(
                                 f"Monster fight back, and you took {monsterDamage} damage"
                             )
@@ -235,21 +240,14 @@ async def on_message(message):
                                 await sendBack("YOU ARE DEAD!!!")
                                 endgame()
                     else:
-                        monsterDamage = curMob.getATK() - curPlayer.getDEF()
-                        if monsterDamage < 0:
-                            monsterDamage = 1
-                        curPlayer.takeDamage(monsterDamage)
+                        monsterDamage = monsterDamageCheck()
                         await sendBack(
                             f"The Monster attack, and you took {monsterDamage} damage"
                         )
                         if curPlayer.isDead():
                             await sendBack("YOU ARE DEAD!!!")
                             endgame()
-                        playerDamage = curPlayer.getATK() - curMob.getDEF()
-                        #if Monster Defend is too high, you will always do 1 damage and vice versa
-                        if playerDamage < 0:
-                            playerDamage = 1
-                        curMob.takeDamage(playerDamage)
+                        playerDamage = playerDamageCheck()
                         await sendBack(
                             f"You fight back and did {playerDamage} damage back"
                         )
@@ -311,9 +309,9 @@ async def on_message(message):
 
                     else:
                         await sendBack("Fail to escape!")
-                        dmgtaken = curMob.getATK()
-                        await sendBack(f"You took {dmgtaken} damage")
-                        curPlayer.takeDamage(dmgtaken)
+                        monsterDamage = monsterDamageCheck()
+                        await sendBack(f"You took {monsterDamage} damage")
+                        curPlayer.takeDamage(monsterDamage)
                         if curPlayer.isDead():
                             await sendBack("YOU ARE DEAD!!!")
                             endgame()
@@ -408,4 +406,3 @@ async def on_message(message):
 
 #keep_alive()
 #client.run(os.environ['TOKEN'])
-

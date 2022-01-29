@@ -3,12 +3,12 @@
 ### TO-DO 
 
 Need -
-- [ ] Implentment Shop
+- [x] Implentment Shop
 - [x] Game Story
 - [ ] Monster/Item Data
 - [x] Block player to create more then 1 charater
 - [x] stop user from using some commend beforre creating a charater
-- [ ] Update class to have getting to setter to change value
+- [x] Update class to have getting to setter to change value
 
 Want -
 - [ ] Magic
