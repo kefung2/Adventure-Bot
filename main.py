@@ -409,4 +409,3 @@ async def on_message(message):
 #keep_alive()
 #client.run(os.environ['TOKEN'])
 
-client.run('OTM1MjkzOTUxMjM2MjU1Nzk0.Ye8iXg.xrnHKWlwwqzfEOUbrUjwz89JDyE')
