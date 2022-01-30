@@ -1,28 +1,84 @@
 monsterList = [
    {
     "name": "Slime",
-    "hp": 10,
+    "hp": 5,
     "atk": 1,
     "deff": 1,
-    "spd": 2,
+    "spd": 1,
     "exp": 1
   },
   {    
-    "name": "red",
-    "hp": 10,
-    "atk": 1,
+    "name": "Skeleton",
+    "hp": 8,
+    "atk": 2,
+    "deff": 6,
+    "spd": 3,
+    "exp": 2
+  },
+  {    
+    "name": "Slime",
+    "hp": 3,
+    "atk": 5,
     "deff": 1,
     "spd": 3,
     "exp": 1
   },
-  {    
-    "name": "blue",
+  {
+    "name": "Slime",
+    "hp": 3,
+    "atk": 1,
+    "deff": 10,
+    "spd": 1,
+    "exp": 1
+  },
+  {
+    "name": "Wolf",
+    "hp": 10,
+    "atk": 5,
+    "deff": 1,
+    "spd": 6,
+    "exp": 2
+  },
+  {
+    "name": "Werewolf",
+    "hp": 8,
+    "atk": 6,
+    "deff": 5,
+    "spd": 5,
+    "exp": 3
+  },
+  {
+    "name": "Zombie",
     "hp": 9,
     "atk": 1,
     "deff": 1,
-    "spd": 3,
-    "exp": 1
-  }
+    "spd": 2,
+    "exp": 2
+  },
+  {
+    "name": "Snake",
+    "hp": 10,
+    "atk": 4,
+    "deff": 3,
+    "spd": 4,
+    "exp": 3
+  },
+  {
+    "name": "Obake",
+    "hp": 4,
+    "atk": 10,
+    "deff": 2,
+    "spd": 9,
+    "exp": 4
+  },
+  {
+    "name": "Dragon",
+    "hp": 20,
+    "atk": 10,
+    "deff": 10,
+    "spd": 10,
+    "exp": 5
+  },
 ]
 
 class NewMonster:

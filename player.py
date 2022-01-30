@@ -22,14 +22,17 @@ class NewPlayer:
           f"DEF : {self.deff}\n"
           f"SPD : {self.spd}\n"
           f"EXP : {self.exp}\n"
+          f"Encounter count : {self.encounter}"
           "=====================================\n"
           )
 
   def takeDamage(self, damage):
+    print(f"called, taking {damage} damage")
     self.curhp -= damage
-    return(f"You taken -{damage} damage")
+    return
 
   def isDead(self):
+    print(f"HP: {self.curhp} / {self.hp}")
     return(self.curhp <= 0)
 
   def gainEXP(self, expPoint):
@@ -60,7 +63,8 @@ class NewPlayer:
     self.hp += 1
     self.atk += 1
     self.deff += 1
-    self.spd += 1 
+    self.spd += 1
+    self.exp -= 8
 
   def setAtk(self, update):
     self.atk += update

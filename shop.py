@@ -5,65 +5,79 @@ weaponList = [
   },
 
   {
+    "itemName" : "Knife",
+    "value" : 1
+  },
+
+  {
     "itemName" : "Sword",
     "value" : 2
   },
 
   {
-    "itemName" : "Lance",
-    "value" : 3
+    "itemName" : "Pan",
+    "value" : 2
   },
 
   {
     "itemName" : "Greatsword",
-    "value" : 5
-  },
-
-  {
-    "itemName" : "Shotgun",
-    "value" : 10
+    "value" : 3
   }
 
-  
 ]
 
 armorList = [
   {
-    "itemName" : "Cape",
+    "itemName" : "Shirt",
+    "value" : 1
+  },
+
+  {
+    "itemName" : "Shorts",
     "value" : 1
   },
   
+  {
+    "itemName" : "Pan for the booty",
+    "value" : 1
+  },
+
   {
     "itemName" : "Helmet",
     "value" : 2
   },
 
   {
-    "itemName" : "Shield",
+    "itemName" : "Small Shield",
     "value" : 3
   },
-
-  {
-    "itemName" : "Breastplate",
-    "value" : 5
-  }
   
 ]
 
 healingList = [
   {
-    "itemName" : "Bandage",
+    "itemName" : "Herb",
     "value" : 1
   },
 
   {
-    "itemName" : "Potion",
-    "value" : 3
+    "itemName" : "Bandage",
+    "value" : 2
+  },
+
+  {
+    "itemName" : "Healing Potion",
+    "value" : 4
+  },
+
+  {
+    "itemName" : "Great Potion",
+    "value" : 6
   },
 
   {
     "itemName" : "Med-kit",
-    "value" : 5
+    "value" : 20
   }
 
 ]
@@ -80,10 +94,12 @@ class NewShop:
 
   def showValue(self):
     return(
+      "=====================================\n"
       f"Pick one of the items to go with your adventure\n"
       f"1-Weapon : {self.name1} , increase attack by {self.atk} \n"
       f"2-Armor : {self.name2} , increase defense by {self.deff} \n"
       f"3-Healing : {self.name3} , recover HP by {self.heal} \n"
+      "=====================================\n"
       
     )
   

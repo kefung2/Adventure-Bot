@@ -4,14 +4,14 @@ import monster
 import player
 import shop
 import random
-#from keep_alive import keep_alive
-# import requests
+from keep_alive import keep_alive
+import requests
 
-# r = requests.head(url="https://discord.com/api/v1")
-# try:
-#     print(f"Rate limit {int(r.headers['Retry-After']) / 60} minutes left")
-# except:
-#     print("No rate limit")
+r = requests.head(url="https://discord.com/api/v1")
+try:
+    print(f"Rate limit {int(r.headers['Retry-After']) / 60} minutes left")
+except:
+    print("No rate limit")
 
 client = discord.Client()
 
@@ -41,7 +41,7 @@ def helpMenu():
 
 
 def playStory():
-    return ("In the kingdom of Nakiri, there is a princess name Ayame, who is crownd the most beautiful lady in the kingdom. One day the Demon King Teemo, has caught eye on the princess, and kidnap her away. The king has summon a hero from a different world in order to save his daughter. Now hero your jounery has begin.")
+    return ("In the Kingdom of Hyakki, there is a princess name Ayame, who is crownd the most beautiful lady in the kingdom. One day the Demon King Teeto, has caught eye on the princess, and kidnap her away. The king has summon a hero from a different world in order to save his daughter. Now hero your jounery has begin.")
 
 
 def endgame():
@@ -140,8 +140,8 @@ async def on_message(message):
         print(gameState)
 
     #following commend only work if the game has begin
-    #if bool(gameState):
-    if True:
+    if bool(gameState):
+    #if True:
         # Commend to see menu
         if msg.startswith('$newPlayer'):
             global curPlayer
@@ -181,6 +181,7 @@ async def on_message(message):
                     )
                 else:
                     if curPlayer.getEncounter() == 10:
+                        endgame()
                         await sendBack("Thank you for playing!")
 
                     if randomEncounter() == 0:
@@ -217,7 +218,7 @@ async def on_message(message):
                     await sendBack("There is no monster to fight")
                 else:
                     print("Checking Speed")
-                    print(curPlayer.getSPD() > curMob.getSPD())
+                    print(curPlayer.getSPD() >= curMob.getSPD())
                     # Check who have higher speed to go first
                     if curPlayer.getSPD() > curMob.getSPD():
                         playerDamage = playerDamageCheck()
@@ -311,7 +312,8 @@ async def on_message(message):
                         await sendBack("Fail to escape!")
                         monsterDamage = monsterDamageCheck()
                         await sendBack(f"You took {monsterDamage} damage")
-                        curPlayer.takeDamage(monsterDamage)
+                        stat = curPlayer.showStat()
+                        await sendBack(stat)
                         if curPlayer.isDead():
                             await sendBack("YOU ARE DEAD!!!")
                             endgame()
@@ -404,5 +406,5 @@ async def on_message(message):
             "Please check the menu with $help first before starting the game")
 
 
-#keep_alive()
-#client.run(os.environ['TOKEN'])
+keep_alive()
+client.run(os.environ['TOKEN'])
