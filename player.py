@@ -5,12 +5,15 @@ class NewPlayer:
     
   def __init__(self, name, hp, atk, deff, spd):
     self.name = name
+    self.level = 1
     self.hp = hp
     self.curhp = hp
     self.atk = atk
     self.deff = deff
     self.spd = spd
-    self.encounter = 0
+    self.mobEncounter = 0
+    self.shopEncounter = 0
+    self.eventEncounter = 0
     self.exp = 0
 
   def showStat(self):
@@ -18,11 +21,12 @@ class NewPlayer:
           "=====================================\n"
           f"Name : {self.name}\n"
           f"HP : {self.curhp} / {self.hp}\n"
+          f"LV : {self.level}\n"
           f"ATK : {self.atk}\n"
           f"DEF : {self.deff}\n"
           f"SPD : {self.spd}\n"
           f"EXP : {self.exp}\n"
-          f"Encounter count : {self.encounter}"
+          #f"Encounter count : {self.encounter}"
           "=====================================\n"
           )
 
@@ -38,11 +42,23 @@ class NewPlayer:
   def gainEXP(self, expPoint):
     self.exp += expPoint
 
-  def encounterUp(self):
-    self.encounter += 1
+  def encounterUp(self, typeOfEncounter):
+    match typeOfEncounter:
+      case 0:
+        self.mobEncounter += 1
+      case 1:
+        self.shopEncounter += 1
+      case 2:
+        self.eventEncounter += 1
+      case _:
+        print("soomething is wrong")
 
   def getEncounter(self):
-    return self.encounter
+    return (
+      f"You ran into monster {self.mobEncounter} times\n"
+      f"You see {self.shopEncounter} shop on your journey\n"
+      f"{self.eventEncounter} event happened "
+      )
 
   def getEXP(self):
     return self.exp
@@ -60,6 +76,7 @@ class NewPlayer:
     return self.exp
 
   def levelUp(self):
+    self.level += 1
     self.hp += 1
     self.atk += 1
     self.deff += 1

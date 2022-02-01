@@ -4,14 +4,14 @@ import monster
 import player
 import shop
 import random
-from keep_alive import keep_alive
-import requests
+#from keep_alive import keep_alive
+# import requests
 
-r = requests.head(url="https://discord.com/api/v1")
-try:
-    print(f"Rate limit {int(r.headers['Retry-After']) / 60} minutes left")
-except:
-    print("No rate limit")
+# r = requests.head(url="https://discord.com/api/v1")
+# try:
+#     print(f"Rate limit {int(r.headers['Retry-After']) / 60} minutes left")
+# except:
+#     print("No rate limit")
 
 client = discord.Client()
 
@@ -89,25 +89,22 @@ def monsterDamageCheck():
 
 
 def randomEncounter():
-    roll = random.randint(0, 100) % 2 ==0
+    roll = random.randint(1, 100)
     # global previousEnc
     # print(f"previousEnc = {previousEnc}")
-    if roll == 0:
-        global previousEnc
-        if previousEnc == 0:
-            return random.randint(0, 100) % 2
-        else:
-            #global previousEnc
-            previousEnc = 0
-            return 0
-    else:
-        if previousEnc == 1:
-            return random.randint(0, 100) % 2
-        else:
-            #global previousEnc
-            previousEnc = 1
-            return 1
+    # 50%: monster (0), 30% shop (1), 20% random event (2)
+    
+    if roll > 50:
+        print(roll, "mob")
+        return 0
+    elif 20 < roll <= 50:
+        print(roll, "shop")
+        return 1
+    elif 1 <= roll <= 20:
+        print(roll, "event")
+        return 2
 
+######################################################################################################
 
 @client.event
 async def on_ready():
@@ -137,11 +134,11 @@ async def on_message(message):
         await sendBack(story)
         await sendBack("Please tell us about yourself Hero")
         return
-        print(gameState)
+        #print(gameState)
 
     #following commend only work if the game has begin
-    if bool(gameState):
-    #if True:
+    #if bool(gameState):
+    if True:
         # Commend to see menu
         if msg.startswith('$newPlayer'):
             global curPlayer
@@ -175,6 +172,14 @@ async def on_message(message):
             # Commed to move / go next
 
             if msg.startswith('$move'):
+                global curMob
+                global curShop
+
+                if not(curShop == None):
+                    # remove shop if player decide to not buy anything and move on
+                    await sendBack("You left without buying anything")
+                    del curShop
+                    curShop = None
                 if bool(checkMobAlive()):
                     await sendBack(
                         "Monster is blocking your way, fight it or run from it"
@@ -183,35 +188,35 @@ async def on_message(message):
                     if curPlayer.getEncounter() == 10:
                         endgame()
                         await sendBack("Thank you for playing!")
-
-                    if randomEncounter() == 0:
+                    encounterType = randomEncounter()
+                    if encounterType == 0:
                         await sendBack("You have encounter a monster")
                         #TO-DO: ADD BOSS AFTER 10 ENCOUNTER
                         #pending boss fight
-                        curPlayer.encounterUp()
+                        curPlayer.encounterUp(0)
                         #print(curPlayer.encounter)
                         monsterIndex = random.randint(
                             0,
                             len(monster.monsterList) - 1)
                         #print(monsterIndex)
-                        global curMob
                         curMob = monster.NewMonster(monsterIndex)
                         stat = curMob.showStat()
                         await sendBack(stat)
-                    else:
+                    elif encounterType == 1:
                         await sendBack("You have encounter a merchant")
-                        curPlayer.encounterUp()
+                        curPlayer.encounterUp(1)
                         
                         item1 = random.randint(0, len(shop.weaponList) -1 )
                         item2 = random.randint(0, len(shop.armorList) -1 )
                         item3 = random.randint(0, len(shop.healingList) -1 )
-                        global curShop
                         curShop = shop.NewShop(item1, item2, item3)
                         values = curShop.showValue()
                         await sendBack(values)
+                    elif encounterType == 2:
+                        curPlayer.encounterUp(2)
+                        await sendBack("Random event coming soon!")
 
-                        
-
+                    
             # Commend to fight
             if msg.startswith('$fight'):
                 if curMob == None:
@@ -406,5 +411,5 @@ async def on_message(message):
             "Please check the menu with $help first before starting the game")
 
 
-keep_alive()
-client.run(os.environ['TOKEN'])
+#keep_alive()
+# client.run(os.environ['TOKEN'])
