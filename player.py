@@ -11,7 +11,8 @@ class NewPlayer:
     self.atk = atk
     self.deff = deff
     self.spd = spd
-    self.critMod = .1
+    self.critMod = .05
+    self.critDamage = .5
     self.mobEncounter = 0
     self.shopEncounter = 0
     self.eventEncounter = 0
@@ -27,7 +28,8 @@ class NewPlayer:
           f"DEF : {self.deff}\n"
           f"SPD : {self.spd}\n"
           f"EXP : {self.exp}\n"
-          #f"Encounter count : {self.encounter}"
+          f"Crit Chance : {self.critMod * 100}%\n"
+          f"crit Damage : {self.critDamage}%\n"
           "=====================================\n"
           )
 
@@ -75,6 +77,12 @@ class NewPlayer:
 
   def getEXP(self):
     return self.exp
+  
+  def getCritChance(self):
+    return self.critMod*100
+  
+  def getCritDamage(self):
+    return self.critDamage
 
   def levelUp(self):
     self.level += 1

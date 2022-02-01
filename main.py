@@ -71,14 +71,25 @@ def checkMobAlive():
         print("true")
         return True
 
-def playerDamageCheck():
+def playerDamageCheck(crit):
     playerDamage = curPlayer.getATK() - curMob.getDEF()
     #if Monster Defend is too high, you will always do 1 damage and vice versa
     print("Damage: ", playerDamage)
     if playerDamage < 0:
         playerDamage = 1
+    if crit:
+        playerDamage = playerDamage + (playerDamage * curPlayer.getCritDamage())
     curMob.takeDamage(playerDamage)
     return playerDamage
+
+def playerCritCheck():
+    critChance = curPlayer.getCritChance()
+    hit = random.randint(1, 100)
+    if hit <= critChance:
+        return True
+    else:
+        return False
+
 
 def monsterDamageCheck():
     monsterDamage = curMob.getATK() - curPlayer.getDEF()
@@ -226,8 +237,12 @@ async def on_message(message):
                     print(curPlayer.getSPD() >= curMob.getSPD())
                     # Check who have higher speed to go first
                     if curPlayer.getSPD() > curMob.getSPD():
-                        playerDamage = playerDamageCheck()
-                        await sendBack(f"You did {playerDamage} damage")
+                        crit = playerCritCheck()
+                        playerDamage = playerDamageCheck(crit)
+                        if crit:
+                            await sendBack(f"You crited and did {playerDamage} damage")
+                        else:
+                            await sendBack(f"You did {playerDamage} damage")
                         if curMob.isDead():
                             await sendBack("You killed the monster")
                             curPlayer.gainEXP(curMob.getEXP())
