@@ -11,6 +11,7 @@ class NewPlayer:
     self.atk = atk
     self.deff = deff
     self.spd = spd
+    self.critMod = .1
     self.mobEncounter = 0
     self.shopEncounter = 0
     self.eventEncounter = 0
