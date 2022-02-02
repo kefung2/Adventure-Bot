@@ -16,8 +16,8 @@ monsterList = [
     "atk": 2,
     "deff": 6,
     "spd": 3,
-    "critMod" : 0,
-    "critDamage" : 0,
+    "critMod" : .05,
+    "critDamage" : .2,
     "exp": 2
   },
   {    
@@ -26,8 +26,8 @@ monsterList = [
     "atk": 5,
     "deff": 1,
     "spd": 3,
-    "critMod" : 0,
-    "critDamage" : 0,
+    "critMod" : .2,
+    "critDamage" : .1,
     "exp": 1
   },
   {
@@ -36,8 +36,8 @@ monsterList = [
     "atk": 1,
     "deff": 10,
     "spd": 1,
-    "critMod" : 0,
-    "critDamage" : 0,
+    "critMod" : .01,
+    "critDamage" : 3,
     "exp": 1
   },
   {
@@ -46,8 +46,8 @@ monsterList = [
     "atk": 5,
     "deff": 1,
     "spd": 6,
-    "critMod" : 0,
-    "critDamage" : 0,
+    "critMod" : .2,
+    "critDamage" : .25,
     "exp": 2
   },
   {
@@ -56,8 +56,8 @@ monsterList = [
     "atk": 6,
     "deff": 5,
     "spd": 5,
-    "critMod" : 0,
-    "critDamage" : 0,
+    "critMod" : .25,
+    "critDamage" : .3,
     "exp": 3
   },
   {
@@ -66,8 +66,8 @@ monsterList = [
     "atk": 1,
     "deff": 1,
     "spd": 2,
-    "critMod" : 0,
-    "critDamage" : 0,
+    "critMod" : .1,
+    "critDamage" : 2,
     "exp": 2
   },
   {
@@ -76,8 +76,8 @@ monsterList = [
     "atk": 4,
     "deff": 3,
     "spd": 4,
-    "critMod" : 0,
-    "critDamage" : 0,
+    "critMod" : .2,
+    "critDamage" : .5,
     "exp": 3
   },
   {
@@ -86,8 +86,8 @@ monsterList = [
     "atk": 10,
     "deff": 2,
     "spd": 9,
-    "critMod" : 0,
-    "critDamage" : 0,
+    "critMod" : .05,
+    "critDamage" : .5,
     "exp": 4
   },
   {
@@ -96,8 +96,8 @@ monsterList = [
     "atk": 10,
     "deff": 10,
     "spd": 10,
-    "critMod" : 0,
-    "critDamage" : 0,
+    "critMod" : .1,
+    "critDamage" : 2,
     "exp": 5
   },
 ]

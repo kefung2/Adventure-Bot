@@ -29,7 +29,7 @@ class NewPlayer:
           f"SPD : {self.spd}\n"
           f"EXP : {self.exp}\n"
           f"Crit Chance : {self.critMod * 100}%\n"
-          f"crit Damage : {self.critDamage}%\n"
+          f"crit Damage : {self.critDamage * 100}%\n"
           "=====================================\n"
           )
 
