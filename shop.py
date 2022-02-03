@@ -1,3 +1,11 @@
+item1name = None
+item2name = None
+item3name = None
+
+item1value = None
+item2value = None
+item3value = None
+
 weaponList = [
   {
     "itemName" : "Dagger",
@@ -83,34 +91,58 @@ healingList = [
 ]
 
 class NewShop:
-  def __init__(self, atk, deff, heal):
+  def __init__(self, item1, item2, item3):
     
-    self.name1 = weaponList[atk]['itemName']
-    self.name2 = armorList[deff]['itemName']
-    self.name3 = healingList[heal]['itemName']
-    self.atk = weaponList[atk]['value']
-    self.deff = armorList[deff]['value']
-    self.heal = healingList[heal]['value']
+    a = weaponList[item1]
+    b = armorList[item2]
+    c = healingList[item3]
+
+    global item1name, item2name, item3name, item1value, item2value, item3value
+
+    item1name = a['itemName']
+    item2name = b['itemName']
+    item3name = c['itemName']
+
+    item1value = a['value']
+    item2value = b['value']
+    item3value = c['value']
+
+    print(f"Item 1 name is {item1name}")
+
+    print(f"printing list a {a}")
+    print(f"printing list b {b}")
+    print(f"printing list c {c}")
+
+    self.shop = {
+      0:a,
+      1:b,
+      2:c
+
+    }
 
   def showValue(self):
     return(
-      "=====================================\n"
-      f"Pick one of the items to go with your adventure\n"
-      f"1-Weapon : {self.name1} , increase attack by {self.atk} \n"
-      f"2-Armor : {self.name2} , increase defense by {self.deff} \n"
-      f"3-Healing : {self.name3} , recover HP by {self.heal} \n"
-      "=====================================\n"
-      
+      "================================\n"
+      "Pick one of the following items\n"
+      f"1- Weapon : {item1name} , increase attack by {item1value}\n"
+      f"2- Armor : {item2name} , increase defense by {item2value}\n"
+      f"3- Healing : {item3name} , health recover by {item3value}\n"
+
     )
-  
+
+  def getItem(self, index ):
+    print(self.shop[index])
+    return self.shop[index]
+
+
   def getAttack(self):
-    return self.atk
+    return item1value
 
   def getDeffence(self):
-    return self.deff
+    return item2value
 
   def getRecovery(self):
-    return self.heal
+    return item3value
 
 
 """
