@@ -1,11 +1,3 @@
-item1name = None
-item2name = None
-item3name = None
-
-item1value = None
-item2value = None
-item3value = None
-
 weaponList = [
   {
     "itemName" : "Dagger",
@@ -97,17 +89,7 @@ class NewShop:
     b = armorList[item2]
     c = healingList[item3]
 
-    global item1name, item2name, item3name, item1value, item2value, item3value
 
-    item1name = a['itemName']
-    item2name = b['itemName']
-    item3name = c['itemName']
-
-    item1value = a['value']
-    item2value = b['value']
-    item3value = c['value']
-
-    print(f"Item 1 name is {item1name}")
 
     print(f"printing list a {a}")
     print(f"printing list b {b}")
@@ -124,9 +106,9 @@ class NewShop:
     return(
       "================================\n"
       "Pick one of the following items\n"
-      f"1- Weapon : {item1name} , increase attack by {item1value}\n"
-      f"2- Armor : {item2name} , increase defense by {item2value}\n"
-      f"3- Healing : {item3name} , health recover by {item3value}\n"
+      f"1- Weapon : {self.shop[0]['itemName']} , increase attack by {self.shop[0]['value']}\n"
+      f"2- Armor : {self.shop[1]['itemName']} , increase defense by {self.shop[1]['value']}\n"
+      f"3- Healing : {self.shop[2]['itemName']} , health recover by {self.shop[2]['value']}\n"
 
     )
 
@@ -136,13 +118,13 @@ class NewShop:
 
 
   def getAttack(self):
-    return item1value
+    return self.shop[0]['value']
 
   def getDeffence(self):
-    return item2value
+    return self.shop[1]['value']
 
   def getRecovery(self):
-    return item3value
+    return self.shop[2]['value']
 
 
 """
