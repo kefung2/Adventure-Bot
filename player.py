@@ -47,7 +47,7 @@ class NewPlayer:
       case 0:
         self.mobEncounter += 1
       case 1:
-        self.shopEncounter += 1
+        self.shopEncounter += .5
       case 2:
         self.eventEncounter += 1
       case _:
@@ -59,6 +59,9 @@ class NewPlayer:
       f"You see {self.shopEncounter} shop on your journey\n"
       f"{self.eventEncounter} event happened "
       )
+
+  def getEncounterCount(self):
+    return (self.mobEncounter + self.eventEncounter + self.shopEncounter)
 
   def getEXP(self):
     return self.exp
@@ -88,6 +91,9 @@ class NewPlayer:
 
   def setDef(self, update):
     self.deff += update
+
+  def setSpd(self, update):
+    self.spd += update
 
   def setHp(self, update):
     
