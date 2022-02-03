@@ -214,7 +214,7 @@ async def on_message(message):
                         endgame()
                         await sendBack("Thank you for playing!")
                         return
-                    if curPlayer.getEncounterCount()%5 == 0 or 0.5:
+                    if (curPlayer.getEncounterCount()%5 == 0 or 0.5) and not(curPlayer.getEncounterCount() == 0):
                         await sendBack(f"current count: {curPlayer.getEncounterCount()}")
                     encounterType = randomEncounter()
                     if encounterType == 0:
