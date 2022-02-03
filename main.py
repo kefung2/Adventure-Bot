@@ -214,8 +214,14 @@ async def on_message(message):
                         endgame()
                         await sendBack("Thank you for playing!")
                         return
-                    if (curPlayer.getEncounterCount()%5 == 0 or 0.5) and not(curPlayer.getEncounterCount() == 0):
+                    print(f"check: curPlayer.getEncounterCount() = {curPlayer.getEncounterCount()}")
+                    print(f"check: curPlayer.getEncounterCount()%5 == (0 or 0.5)  =  {curPlayer.getEncounterCount()%5 == (0 or 0.5)}")
+                    print(f"check: not(curPlayer.getEncounterCount() == 0   =  {not(curPlayer.getEncounterCount() == 0)}")
+                    if curPlayer.getEncounterCount() == 0 or curPlayer.getEncounterCount() == 0.5:
+                        pass
+                    elif (curPlayer.getEncounterCount()%5 == 0) or (curPlayer.getEncounterCount()%5 == 0.5):
                         await sendBack(f"current count: {curPlayer.getEncounterCount()}")
+
                     encounterType = randomEncounter()
                     if encounterType == 0:
                         await sendBack("You have encounter a monster")
@@ -387,7 +393,8 @@ async def on_message(message):
 
                     else:
                         await sendBack("Fail to escape!")
-                        monsterDamage = monsterDamagePhase()
+                        crit = monsterCritCheck()
+                        monsterDamage = monsterDamagePhase(crit)
                         await sendBack(f"You took {monsterDamage} damage")
                         stat = curPlayer.showStat()
                         await sendBack(stat)
