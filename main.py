@@ -21,6 +21,7 @@ curMob = None
 curShop = None
 curPlayer = None
 previousEnc = -1
+storyEncounter = 25
 
 
 
@@ -43,6 +44,8 @@ def helpMenu():
 def playStory():
     return ("In the Kingdom of Hyakki, there is a princess name Ayame, who is crownd the most beautiful lady in the kingdom. One day the Demon King Teeto, has caught eye on the princess, and kidnap her away. The king has summon a hero from a different world in order to save his daughter. Now hero your jounery has begin.")
 
+def endStory():
+    return("You have successfully defeat the Deam King, and bring princess Ayame back to the kingdom safely. As a reward the King offer the marriage of princess Ayame to you. You give it some thought and decide to deline the offer, and in exchange you want a huge amount of gold instead. The King have respected you decision and give huge amount of gold and a land for you to live in. As now you mission of saving the princess has been fulfill, and you have a place to stay in this world, so you decide to move on with your own goal. To Build a Harem of Beautiful Girl. THE END")
 
 def endgame():
     global curPlayer, curMob, curShop, gameState, previousEnc
@@ -185,9 +188,12 @@ async def on_message(message):
                         "Monster is blocking your way, fight it or run from it"
                     )
                 else:
-                    if curPlayer.getEncounter() == 10:
+                    if curPlayer.getEncounterCount() >= storyEncounter:
                         endgame()
                         await sendBack("Thank you for playing!")
+                        return
+                    if curPlayer.getEncounterCount()%5 == 0 or 0.5:
+                        await sendBack(f"current count: {curPlayer.getEncounterCount()}")
                     encounterType = randomEncounter()
                     if encounterType == 0:
                         await sendBack("You have encounter a monster")
@@ -214,7 +220,40 @@ async def on_message(message):
                         await sendBack(values)
                     elif encounterType == 2:
                         curPlayer.encounterUp(2)
-                        await sendBack("Random event coming soon!")
+                        typrOfEvent = random.randint(1, 100)%5
+                        val = random.randint(1,5)
+
+                        match typrOfEvent:
+                            case 0:
+                                await sendBack(f"You spend the night at a hotel, and rested pretty well. Heal by {val}")
+                                curPlayer.setHp(val)
+                                stat = curPlayer.showStat()
+                                await sendBack(stat)
+                            case 1:
+                                await sendBack(f"You wonder into a lake and saw a woman taking a bath, and you were caught, so you run with all your might. As a result your speed go up by {val}")
+                                curPlayer.setSpd(val)
+                                stat = curPlayer.showStat()
+                                await sendBack(stat)
+                            case 2:
+                                await sendBack(f"You spend some time practicing you weapon and fightinng skill before resting for the night. As a result your attack went up by {val}")
+                                curPlayer.setAtk(val)
+                                stat = curPlayer.showStat()
+                                await sendBack(stat)
+                            case 3:
+                                await sendBack(f"You spend some time maintance your armor, now it is better then ever. As a result your defend went up by {val}")
+                                curPlayer.setDef(val)
+                                stat = curPlayer.showStat()
+                                await sendBack(stat)
+                            case 4:
+                                await sendBack(f"You camp out for the night, and cook some mushroom you picked up, turns out those are the mushroom Demon King Teeto plant. You took {val} damage from eattinng it")
+                                curPlayer.takeDamage(val)
+                                stat = curPlayer.showStat()
+                                await sendBack(stat)
+                            case _:
+                                await sendBack("What a peaceful day!")
+
+                        
+                        
 
                     
             # Commend to fight
