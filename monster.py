@@ -1,10 +1,13 @@
 monsterList = [
    {
     "name": "Slime",
+    "level" : 1,
     "hp": 5,
     "atk": 1,
     "deff": 1,
     "spd": 1,
+    "critMod" : 0,
+    "critDamage" : 0,
     "exp": 1
   },
   {    
@@ -13,6 +16,8 @@ monsterList = [
     "atk": 2,
     "deff": 6,
     "spd": 3,
+    "critMod" : .05,
+    "critDamage" : .2,
     "exp": 2
   },
   {    
@@ -21,6 +26,8 @@ monsterList = [
     "atk": 5,
     "deff": 1,
     "spd": 3,
+    "critMod" : .2,
+    "critDamage" : .1,
     "exp": 1
   },
   {
@@ -29,6 +36,8 @@ monsterList = [
     "atk": 1,
     "deff": 10,
     "spd": 1,
+    "critMod" : .01,
+    "critDamage" : 3,
     "exp": 1
   },
   {
@@ -37,6 +46,8 @@ monsterList = [
     "atk": 5,
     "deff": 1,
     "spd": 6,
+    "critMod" : .2,
+    "critDamage" : .25,
     "exp": 2
   },
   {
@@ -45,6 +56,8 @@ monsterList = [
     "atk": 6,
     "deff": 5,
     "spd": 5,
+    "critMod" : .25,
+    "critDamage" : .3,
     "exp": 3
   },
   {
@@ -53,6 +66,8 @@ monsterList = [
     "atk": 1,
     "deff": 1,
     "spd": 2,
+    "critMod" : .1,
+    "critDamage" : 2,
     "exp": 2
   },
   {
@@ -61,6 +76,8 @@ monsterList = [
     "atk": 4,
     "deff": 3,
     "spd": 4,
+    "critMod" : .2,
+    "critDamage" : .5,
     "exp": 3
   },
   {
@@ -69,6 +86,8 @@ monsterList = [
     "atk": 10,
     "deff": 2,
     "spd": 9,
+    "critMod" : .05,
+    "critDamage" : .5,
     "exp": 4
   },
   {
@@ -77,6 +96,8 @@ monsterList = [
     "atk": 10,
     "deff": 10,
     "spd": 10,
+    "critMod" : .1,
+    "critDamage" : 2,
     "exp": 5
   },
 ]
@@ -89,6 +110,8 @@ class NewMonster:
     self.atk = monsterList[num]['atk']
     self.deff = monsterList[num]['deff']
     self.spd = monsterList[num]['spd']
+    self.critMod = monsterList[num]['critMod']
+    self.critDamage = monsterList[num]['critDamage']
     self.exp = monsterList[num]['exp']
     
   def showStat(self):
@@ -123,3 +146,9 @@ class NewMonster:
 
   def getDEF(self):
     return self.deff
+
+  def getCritChance(self):
+    return self.critMod*100
+  
+  def getCritDamage(self):
+    return self.critDamage
