@@ -74,22 +74,44 @@ def checkMobAlive():
         print("true")
         return True
 
-def playerDamageCheck():
+def playerDamagePhase(crit):
     playerDamage = curPlayer.getATK() - curMob.getDEF()
     #if Monster Defend is too high, you will always do 1 damage and vice versa
     print("Damage: ", playerDamage)
     if playerDamage < 0:
         playerDamage = 1
+    if crit:
+        playerDamage = round(playerDamage + (playerDamage * curPlayer.getCritDamage()))
     curMob.takeDamage(playerDamage)
     return playerDamage
 
-def monsterDamageCheck():
+def playerCritCheck():
+    critChance = curPlayer.getCritChance()
+    hit = random.randint(1, 100)
+    print(f"Player crit roll {hit}; Chance {critChance}")
+    if hit <= critChance:
+        return True
+    else:
+        return False
+
+
+def monsterDamagePhase(crit):
     monsterDamage = curMob.getATK() - curPlayer.getDEF()
     if monsterDamage < 0:
         monsterDamage = 1
+    if crit:
+        monsterDamage = round(monsterDamage + (monsterDamage * curMob.getCritDamage()))
     curPlayer.takeDamage(monsterDamage)
     return monsterDamage
 
+def monsterCritCheck():
+    critChance = curMob.getCritChance()
+    hit = random.randint(1, 100)
+    print(f"Monster crit roll {hit}; Chance {critChance}")
+    if hit <= critChance:
+        return True
+    else:
+        return False
 
 def randomEncounter():
     roll = random.randint(1, 100)
@@ -262,11 +284,14 @@ async def on_message(message):
                     await sendBack("There is no monster to fight")
                 else:
                     print("Checking Speed")
-                    print(curPlayer.getSPD() >= curMob.getSPD())
                     # Check who have higher speed to go first
                     if curPlayer.getSPD() > curMob.getSPD():
-                        playerDamage = playerDamageCheck()
-                        await sendBack(f"You did {playerDamage} damage")
+                        crit = playerCritCheck()
+                        playerDamage = playerDamagePhase(crit)
+                        if crit:
+                            await sendBack(f"You crited and did {playerDamage} damage")
+                        else:
+                            await sendBack(f"You did {playerDamage} damage")
                         if curMob.isDead():
                             await sendBack("You killed the monster")
                             curPlayer.gainEXP(curMob.getEXP())
@@ -276,23 +301,29 @@ async def on_message(message):
                             await sendBack(stat)
                             del curMob
                             curMob = None
+                            return
                         else:
-                            monsterDamage = monsterDamageCheck()
+                            crit = monsterCritCheck()
+                            monsterDamage = monsterDamagePhase(crit)
                             await sendBack(
                                 f"Monster fight back, and you took {monsterDamage} damage"
                             )
                             if curPlayer.isDead():
                                 await sendBack("YOU ARE DEAD!!!")
                                 endgame()
+                                return
                     else:
-                        monsterDamage = monsterDamageCheck()
+                        crit = monsterCritCheck()
+                        monsterDamage = monsterDamagePhase(crit)
                         await sendBack(
                             f"The Monster attack, and you took {monsterDamage} damage"
                         )
                         if curPlayer.isDead():
                             await sendBack("YOU ARE DEAD!!!")
                             endgame()
-                        playerDamage = playerDamageCheck()
+                            return
+                        crit = playerCritCheck()
+                        playerDamage = playerDamagePhase(crit)
                         await sendBack(
                             f"You fight back and did {playerDamage} damage back"
                         )
@@ -305,6 +336,7 @@ async def on_message(message):
                             await sendBack(stat)
                             del curMob
                             curMob = None
+                            return
                     try:
                       if not (curPlayer.isDead()) and not (curMob.isDead()):
                           stat1 = curPlayer.showStat()
@@ -312,7 +344,8 @@ async def on_message(message):
                           stat2 = curMob.showStat()
                           await sendBack(stat2)
                     except:
-                      pass
+                        print("Player or Monster is dead") 
+                        return
 
             # Commend to run from fight
             if msg.startswith('$run'):
@@ -354,7 +387,7 @@ async def on_message(message):
 
                     else:
                         await sendBack("Fail to escape!")
-                        monsterDamage = monsterDamageCheck()
+                        monsterDamage = monsterDamagePhase()
                         await sendBack(f"You took {monsterDamage} damage")
                         stat = curPlayer.showStat()
                         await sendBack(stat)
