@@ -115,6 +115,7 @@ def monsterCritCheck():
 
 def randomEncounter():
     roll = random.randint(1, 100)
+    
     # global previousEnc
     # print(f"previousEnc = {previousEnc}")
     # 50%: monster (0), 30% shop (1), 20% random event (2)
@@ -233,11 +234,20 @@ async def on_message(message):
                     elif encounterType == 1:
                         await sendBack("You have encounter a merchant")
                         curPlayer.encounterUp(1)
-                        
-                        item1 = random.randint(0, len(shop.weaponList) -1 )
-                        item2 = random.randint(0, len(shop.armorList) -1 )
-                        item3 = random.randint(0, len(shop.healingList) -1 )
-                        curShop = shop.NewShop(item1, item2, item3)
+
+                        item1r = random.randint(0, len(shop.weaponList) -1 )
+                        item2r = random.randint(0, len(shop.armorList) -1 )
+                        item3r = random.randint(0, len(shop.healingList) -1 )
+
+                        curShop = shop.NewShop(item1r,item2r,item3r)
+                        item1 = curShop.getItem(0)
+                        item2 = curShop.getItem(1)
+                        item3 = curShop.getItem(2)
+
+                        print(f"printing item1 {item1}")
+                        print(f"printing item2 {item2}")
+                        print(f"printing item3 {item3}")
+                      
                         values = curShop.showValue()
                         await sendBack(values)
                     elif encounterType == 2:
@@ -432,7 +442,7 @@ async def on_message(message):
 
 
                 if(item == 3):
-                    await sendBack(f"Hp increase by {healvalue}")
+                    await sendBack(f"Recover {healvalue} HP")
                     curPlayer.setHp(healvalue)
                     stat=curPlayer.showStat()
                     await sendBack(stat)

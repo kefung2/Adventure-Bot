@@ -83,34 +83,48 @@ healingList = [
 ]
 
 class NewShop:
-  def __init__(self, atk, deff, heal):
+  def __init__(self, item1, item2, item3):
     
-    self.name1 = weaponList[atk]['itemName']
-    self.name2 = armorList[deff]['itemName']
-    self.name3 = healingList[heal]['itemName']
-    self.atk = weaponList[atk]['value']
-    self.deff = armorList[deff]['value']
-    self.heal = healingList[heal]['value']
+    a = weaponList[item1]
+    b = armorList[item2]
+    c = healingList[item3]
+
+
+
+    print(f"printing list a {a}")
+    print(f"printing list b {b}")
+    print(f"printing list c {c}")
+
+    self.shop = {
+      0:a,
+      1:b,
+      2:c
+
+    }
 
   def showValue(self):
     return(
-      "=====================================\n"
-      f"Pick one of the items to go with your adventure\n"
-      f"1-Weapon : {self.name1} , increase attack by {self.atk} \n"
-      f"2-Armor : {self.name2} , increase defense by {self.deff} \n"
-      f"3-Healing : {self.name3} , recover HP by {self.heal} \n"
-      "=====================================\n"
-      
+      "================================\n"
+      "Pick one of the following items\n"
+      f"1- Weapon : {self.shop[0]['itemName']} , increase attack by {self.shop[0]['value']}\n"
+      f"2- Armor : {self.shop[1]['itemName']} , increase defense by {self.shop[1]['value']}\n"
+      f"3- Healing : {self.shop[2]['itemName']} , health recover by {self.shop[2]['value']}\n"
+
     )
-  
+
+  def getItem(self, index ):
+    print(self.shop[index])
+    return self.shop[index]
+
+
   def getAttack(self):
-    return self.atk
+    return self.shop[0]['value']
 
   def getDeffence(self):
-    return self.deff
+    return self.shop[1]['value']
 
   def getRecovery(self):
-    return self.heal
+    return self.shop[2]['value']
 
 
 """
