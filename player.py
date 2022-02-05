@@ -120,3 +120,13 @@ class NewPlayer:
     self.curhp += update
     if(self.curhp > self.hp):
       self.curhp = self.hp
+
+  def setCritR(self, update):
+    self.critMod += (update * 0.01)
+
+  def setCritD(self, update):
+    self.critDamage += (update * 0.01)
+  
+  def setMaxHp(self, update):
+    self.hp += update
+    self.curhp += update

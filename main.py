@@ -114,7 +114,7 @@ def monsterCritCheck():
         return False
 
 def randomEncounter():
-    roll = random.randint(1, 100)
+    roll = random.randint(1, 70)
     
     # global previousEnc
     # print(f"previousEnc = {previousEnc}")
@@ -246,9 +246,9 @@ async def on_message(message):
                         item3r = random.randint(0, len(shop.healingList) -1 )
 
                         curShop = shop.NewShop(item1r,item2r,item3r)
-                        item1 = curShop.getItem(0)
-                        item2 = curShop.getItem(1)
-                        item3 = curShop.getItem(2)
+                        item1 = curShop.getItem(1)
+                        item2 = curShop.getItem(2)
+                        item3 = curShop.getItem(3)
 
                         print(f"printing item1 {item1}")
                         print(f"printing item2 {item2}")
@@ -444,10 +444,6 @@ async def on_message(message):
             if msg.startswith('$buy'):
                 if(curShop == None):
                     await sendBack("There is nothing to buy, use $move to continue your journey")
-                atkvalue=curShop.getAttack()
-                defvalue=curShop.getDeffence()
-                healvalue=curShop.getRecovery()
-
 
                 try:
                     item = int(msg.split("$buy", 1)[1])
@@ -456,40 +452,76 @@ async def on_message(message):
                 except:
                     await sendBack("Please pick 1 item only")
 
-                # if gettype == "":
-                #    pass
-                # elif getttype == "def":
-                #   pass
-                if(item == 1):
-                    await sendBack(f"Increase attack stat by {atkvalue}")
-                    curPlayer.setAtk(atkvalue)
-                    stat=curPlayer.showStat()
-                    await sendBack(stat)
-                    await sendBack("Good luck on your adventure")
-                    del curShop
-                    curShop = None
-                    
-                        
-                if(item == 2):
-                    await sendBack(f"Increase defense stat by {defvalue}")
-                    curPlayer.setDef(defvalue)
+                if(curShop.getItemId(item) == "atk"):
+                    itemvalue = curShop.getItemValue(item)
+                    await sendBack(f"Increase attack stat by {itemvalue}")
+                    curPlayer.setAtk(itemvalue)
                     stat=curPlayer.showStat()
                     await sendBack(stat)
                     await sendBack("Good luck on your adventure")
                     del curShop
                     curShop = None
 
-
-                if(item == 3):
-                    await sendBack(f"Recover {healvalue} HP")
-                    curPlayer.setHp(healvalue)
+                elif(curShop.getItemId(item) == "def"):
+                    itemvalue = curShop.getItemValue(item)
+                    await sendBack(f"Increase defense stat by {itemvalue}")
+                    curPlayer.setDef(itemvalue)
                     stat=curPlayer.showStat()
                     await sendBack(stat)
                     await sendBack("Good luck on your adventure")
                     del curShop
                     curShop = None
 
-                
+                elif(curShop.getItemId(item) == "heal"):
+                    itemvalue = curShop.getItemValue(item)
+                    await sendBack(f"Recover hp by {itemvalue}")
+                    curPlayer.setHp(itemvalue)
+                    stat=curPlayer.showStat()
+                    await sendBack(stat)
+                    await sendBack("Good luck on your adventure")
+                    del curShop
+                    curShop = None
+
+                elif(curShop.getItemId(item) == "critR"):
+                    itemvalue = curShop.getItemValue(item)
+                    await sendBack(f"Increase crit rate by {itemvalue}")
+                    curPlayer.setCritR(itemvalue)
+                    stat=curPlayer.showStat()
+                    await sendBack(stat)
+                    await sendBack("Good luck on your adventure")
+                    del curShop
+                    curShop = None
+
+                elif(curShop.getItemId(item) == "critD"):
+                    itemvalue = curShop.getItemValue(item)
+                    await sendBack(f"Increase crit damage by {itemvalue}")
+                    curPlayer.setCritD(itemvalue)
+                    stat=curPlayer.showStat()
+                    await sendBack(stat)
+                    await sendBack("Good luck on your adventure")
+                    del curShop
+                    curShop = None
+
+                elif(curShop.getItemId(item) == "MaxHP"):
+                    itemvalue = curShop.getItemValue(item)
+                    await sendBack(f"Increase max health by {itemvalue}")
+                    curPlayer.setMaxHp(itemvalue)
+                    stat=curPlayer.showStat()
+                    await sendBack(stat)
+                    await sendBack("Good luck on your adventure")
+                    del curShop
+                    curShop = None
+
+                elif(curShop.getItemId(item) == "Speed"):
+                    itemvalue = curShop.getItemValue(item)
+                    await sendBack(f"Increase speed by {itemvalue}")
+                    curPlayer.setSpd(itemvalue)
+                    stat=curPlayer.showStat()
+                    await sendBack(stat)
+                    await sendBack("Good luck on your adventure")
+                    del curShop
+                    curShop = None
+
 
             # Commend to see current monster stat
             if msg.startswith('$monStat'):
@@ -533,4 +565,7 @@ async def on_message(message):
 
 
 #keep_alive()
-client.run(os.environ['TOKEN'])
+#client.run(os.environ['TOKEN'])
+
+client.run("OTM1MjkzOTUxMjM2MjU1Nzk0.Ye8iXg.uhtvEt_bGb07Ks_JUbFfyxRAPh4")
+
