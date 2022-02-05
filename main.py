@@ -567,5 +567,4 @@ async def on_message(message):
 #keep_alive()
 #client.run(os.environ['TOKEN'])
 
-client.run("OTM1MjkzOTUxMjM2MjU1Nzk0.Ye8iXg.uhtvEt_bGb07Ks_JUbFfyxRAPh4")
 
