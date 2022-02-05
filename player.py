@@ -46,15 +46,26 @@ class NewPlayer:
     self.exp += expPoint
 
   def encounterUp(self, typeOfEncounter):
-    match typeOfEncounter:
-      case 0:
-        self.mobEncounter += 1
-      case 1:
-        self.shopEncounter += .5
-      case 2:
-        self.eventEncounter += 1
-      case _:
-        print("soomething is wrong")
+    
+    # using if else here because replit don't have python 3.10 
+    if typeOfEncounter == 0:
+      self.mobEncounter += 1
+    elif typeOfEncounter == 1:
+      self.mobEncounter +=.5
+    elif typeOfEncounter == 2:
+      self.mobEncounter += 1
+    else:
+      print("soomething is wrong")
+
+    # match typeOfEncounter:
+    #   case 0:
+    #     self.mobEncounter += 1
+    #   case 1:
+    #     self.shopEncounter += .5
+    #   case 2:
+    #     self.eventEncounter += 1
+    #   case _:
+    #     print("soomething is wrong")
 
   def getEncounter(self):
     return (

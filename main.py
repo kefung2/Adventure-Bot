@@ -258,37 +258,65 @@ async def on_message(message):
                         await sendBack(values)
                     elif encounterType == 2:
                         curPlayer.encounterUp(2)
-                        typrOfEvent = random.randint(1, 100)%5
+                        typeOfEvent = random.randint(1, 100)%5
                         val = random.randint(1,5)
 
-                        match typrOfEvent:
-                            case 0:
-                                await sendBack(f"You spend the night at a hotel, and rested pretty well. Heal by {val}")
-                                curPlayer.setHp(val)
-                                stat = curPlayer.showStat()
-                                await sendBack(stat)
-                            case 1:
-                                await sendBack(f"You wonder into a lake and saw a woman taking a bath, and you were caught, so you run with all your might. As a result your speed go up by {val}")
-                                curPlayer.setSpd(val)
-                                stat = curPlayer.showStat()
-                                await sendBack(stat)
-                            case 2:
-                                await sendBack(f"You spend some time practicing you weapon and fightinng skill before resting for the night. As a result your attack went up by {val}")
-                                curPlayer.setAtk(val)
-                                stat = curPlayer.showStat()
-                                await sendBack(stat)
-                            case 3:
-                                await sendBack(f"You spend some time maintance your armor, now it is better then ever. As a result your defend went up by {val}")
-                                curPlayer.setDef(val)
-                                stat = curPlayer.showStat()
-                                await sendBack(stat)
-                            case 4:
-                                await sendBack(f"You camp out for the night, and cook some mushroom you picked up, turns out those are the mushroom Demon King Teeto plant. You took {val} damage from eattinng it")
-                                curPlayer.takeDamage(val)
-                                stat = curPlayer.showStat()
-                                await sendBack(stat)
-                            case _:
-                                await sendBack("What a peaceful day!")
+                        # using if else here because replit don't have python 3.10 
+                        if typeOfEvent == 0 :
+                          await sendBack(f"You spend the night at a hotel, and rested pretty well. Heal by {val}")
+                          curPlayer.setHp(val)
+                          stat = curPlayer.showStat()
+                          await sendBack(stat)
+                        elif typeOfEvent == 1:
+                          await sendBack(f"You wonder into a lake and saw a woman taking a bath, and you were caught, so you run with all your might. As a result your speed go up by {val}")
+                          curPlayer.setSpd(val)
+                          stat = curPlayer.showStat()
+                          await sendBack(stat)
+                        elif typeOfEvent == 2:
+                          await sendBack(f"You spend some time practicing you weapon and fightinng skill before resting for the night. As a result your attack went up by {val}")
+                          curPlayer.setAtk(val)
+                          stat = curPlayer.showStat()
+                          await sendBack(stat)
+                        elif typeOfEvent == 3:
+                          await sendBack(f"You spend some time maintance your armor, now it is better then ever. As a result your defend went up by {val}")
+                          curPlayer.setDef(val)
+                          stat = curPlayer.showStat()
+                          await sendBack(stat)
+                        elif typeOfEvent == 4:
+                          await sendBack(f"You camp out for the night, and cook some mushroom you picked up, turns out those are the mushroom Demon King Teeto plant. You took {val} damage from eattinng it")
+                          curPlayer.takeDamage(val)
+                          stat = curPlayer.showStat()
+                          await sendBack(stat)
+                        else:
+                          await sendBack("What a peaceful day!")
+                        # match typeOfEvent:
+                        #     case 0:
+                        #         await sendBack(f"You spend the night at a hotel, and rested pretty well. Heal by {val}")
+                        #         curPlayer.setHp(val)
+                        #         stat = curPlayer.showStat()
+                        #         await sendBack(stat)
+                        #     case 1:
+                        #         await sendBack(f"You wonder into a lake and saw a woman taking a bath, and you were caught, so you run with all your might. As a result your speed go up by {val}")
+                        #         curPlayer.setSpd(val)
+                        #         stat = curPlayer.showStat()
+                        #         await sendBack(stat)
+                        #     case 2:
+                        #         await sendBack(f"You spend some time practicing you weapon and fightinng skill before resting for the night. As a result your attack went up by {val}")
+                        #         curPlayer.setAtk(val)
+                        #         stat = curPlayer.showStat()
+                        #         await sendBack(stat)
+                        #     case 3:
+                        #         await sendBack(f"You spend some time maintance your armor, now it is better then ever. As a result your defend went up by {val}")
+                        #         curPlayer.setDef(val)
+                        #         stat = curPlayer.showStat()
+                        #         await sendBack(stat)
+                        #     case 4:
+                        #         await sendBack(f"You camp out for the night, and cook some mushroom you picked up, turns out those are the mushroom Demon King Teeto plant. You took {val} damage from eattinng it")
+                        #         curPlayer.takeDamage(val)
+                        #         stat = curPlayer.showStat()
+                        #         await sendBack(stat)
+                        #     case _:
+                        #         await sendBack("What a peaceful day!")
 
                         
                         
@@ -428,6 +456,10 @@ async def on_message(message):
                 except:
                     await sendBack("Please pick 1 item only")
 
+                # if gettype == "":
+                #    pass
+                # elif getttype == "def":
+                #   pass
                 if(item == 1):
                     await sendBack(f"Increase attack stat by {atkvalue}")
                     curPlayer.setAtk(atkvalue)
@@ -501,4 +533,4 @@ async def on_message(message):
 
 
 #keep_alive()
-# client.run(os.environ['TOKEN'])
+client.run(os.environ['TOKEN'])

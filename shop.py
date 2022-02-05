@@ -116,7 +116,6 @@ class NewShop:
     print(self.shop[index])
     return self.shop[index]
 
-
   def getAttack(self):
     return self.shop[0]['value']
 
@@ -126,6 +125,8 @@ class NewShop:
   def getRecovery(self):
     return self.shop[2]['value']
 
+  
+  
 
 """
 offName
