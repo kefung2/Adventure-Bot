@@ -1,84 +1,148 @@
 weaponList = [
+  #attack, critR, critD
   {
     "itemName" : "Dagger",
-    "value" : 1
+    "id" : "atk",
+    "value" : 1,
+    "effect" : "Increase attack by 1"
   },
 
   {
     "itemName" : "Knife",
-    "value" : 1
+    "id" : "critR",
+    "value" : 100,
+    "effect" : "Increase crit rate by 1"
+
   },
 
   {
     "itemName" : "Sword",
-    "value" : 2
+    "id" : "critD",
+    "value" : 50,
+    "effect" : "Increase crit damage by 50"
+
   },
 
   {
     "itemName" : "Pan",
-    "value" : 2
+    "id" : "critD",
+    "value" : 50,
+    "effect" : "Increase crit damage by 50"
+   
   },
 
   {
     "itemName" : "Greatsword",
-    "value" : 3
+    "id" : "atk",
+    "value" : 3,
+    "effect" : "Increase attack by 3"
+
+  },
+
+  {
+    "itemName" : "Katana",
+    "id" : "critD",
+    "value" : 50,
+    "effect" : "Increase crit damage by 50%"
+
   }
 
 ]
 
 armorList = [
+  #defense, resist, maxhp
   {
     "itemName" : "Shirt",
-    "value" : 1
+    "id" : "def",
+    "value" : 1,
+    "effect" : "Increase defense by 1"
+
+    
   },
 
   {
     "itemName" : "Shorts",
-    "value" : 1
+    "id" : "MaxHP",
+    "value" : 1,
+    "effect" : "Increase Max HP by 1"
+
   },
   
   {
     "itemName" : "Pan for the booty",
-    "value" : 1
+    "id" : "MaxHP",
+    "value" : 5,
+    "effect" : "Increase Max HP by 5"
+
   },
 
   {
     "itemName" : "Helmet",
-    "value" : 2
+    "id" : "MaxHP",
+    "value" : 2,
+    "effect" : "Increase HP by 2"
+
   },
 
   {
     "itemName" : "Small Shield",
-    "value" : 3
+    "id" : "def",
+    "value" : 3,
+    "effect" : "Increase defense by 3"
+
   },
   
 ]
 
 healingList = [
+  #recover hp&mp, boost speed
   {
     "itemName" : "Herb",
-    "value" : 1
+    "id" : "heal",
+    "value" : 1,
+    "effect" : "HP recover by 1"
+
   },
 
   {
     "itemName" : "Bandage",
-    "value" : 2
+    "id" : "heal",
+    "value" : 2,
+    "effect" : "HP recover by 2"
+
   },
 
   {
     "itemName" : "Healing Potion",
-    "value" : 4
+    "id" : "heal",
+    "value" : 4,
+    "effect" : "HP recover by 4"
+
   },
 
   {
     "itemName" : "Great Potion",
-    "value" : 6
+    "id" : "heal",
+    "value" : 6,
+    "effect" : "HP recover by 6"
+
   },
 
   {
     "itemName" : "Med-kit",
-    "value" : 20
+    "id" : "heal",
+    "value" : 20,
+    "effect" : "HP recover by 20"
+
+  },
+
+  {
+    "itemName" : "red-cow drink",
+    "id" : "speed",
+    "value" : 5,
+    "effect" : "Increase speed by 5"
   }
+
 
 ]
 
@@ -96,9 +160,9 @@ class NewShop:
     print(f"printing list c {c}")
 
     self.shop = {
-      0:a,
-      1:b,
-      2:c
+      1:a,
+      2:b,
+      3:c
 
     }
 
@@ -106,9 +170,9 @@ class NewShop:
     return(
       "================================\n"
       "Pick one of the following items\n"
-      f"1- Weapon : {self.shop[0]['itemName']} , increase attack by {self.shop[0]['value']}\n"
-      f"2- Armor : {self.shop[1]['itemName']} , increase defense by {self.shop[1]['value']}\n"
-      f"3- Healing : {self.shop[2]['itemName']} , health recover by {self.shop[2]['value']}\n"
+      f"1- Weapon : {self.shop[1]['itemName']} , {self.shop[1]['effect']}\n"
+      f"2- Armor : {self.shop[2]['itemName']} , {self.shop[2]['effect']}\n"
+      f"3- Healing : {self.shop[3]['itemName']} , {self.shop[3]['effect']}\n"
 
     )
 
@@ -116,33 +180,9 @@ class NewShop:
     print(self.shop[index])
     return self.shop[index]
 
-  def getAttack(self):
-    return self.shop[0]['value']
-
-  def getDeffence(self):
-    return self.shop[1]['value']
-
-  def getRecovery(self):
-    return self.shop[2]['value']
-
+  def getItemId(self, category):
+    return self.shop[category]['id']
   
-  
-
-"""
-offName
-offStat
-defName
-defSat
-helName
-helStat
-
-getoff(num)
- return offStat
-
-============================================
-1- itemname : stat
-2- itemname: stat
-item 3 : stat
-
-"""
+  def getItemValue(self, value):
+    return self.shop[value]['value']
 
