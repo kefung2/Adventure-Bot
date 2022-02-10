@@ -4,6 +4,7 @@ import monster
 import player
 import shop
 import random
+import boss
 #from keep_alive import keep_alive
 # import requests
 
@@ -198,6 +199,8 @@ async def on_message(message):
             # Commed to move / go next
 
             if msg.startswith('$move'):
+                await sendBack(f"current count: {curPlayer.getEncounterCount()}")
+
                 global curMob
                 global curShop
 
@@ -221,11 +224,30 @@ async def on_message(message):
                     if curPlayer.getEncounterCount() == 0 or curPlayer.getEncounterCount() == 0.5:
                         pass
                     elif (curPlayer.getEncounterCount()%5 == 0) or (curPlayer.getEncounterCount()%5 == 0.5):
-                        await sendBack(f"current count: {curPlayer.getEncounterCount()}")
-                        ##  BOSS FIGHT HERE,    every 5th fight  
+                        if(curPlayer.getEncounterCount() == 25) or (curPlayer.getEncounterCount() == 25.5):
+                            await sendBack("You have reach the end")
+                            curPlayer.encounterUp(0)
+                            curMob = boss.NewBoss(4)
+                            message = curMob.showMessage()
+                            stat = curMob.showStat()
+                            await sendBack(message)
+                            await sendBack(stat)
+
+                        else:
+                            ##  BOSS FIGHT HERE,    every 5th fight  
+                            await sendBack(f"current count: {curPlayer.getEncounterCount()}")
+                            await sendBack("You encounter a boss!!!")
+                            curPlayer.encounterUp(0)
+                            minibossIndex = random.randint(0, len(boss.miniBossList) - 2)
+                            curMob = boss.NewBoss(minibossIndex)
+                            message = curMob.showMessage()
+                            stat = curMob.showStat()
+                            await sendBack(message)
+                            await sendBack(stat)
+
 
                     encounterType = randomEncounter()
-                    if encounterType == 0:
+                    if (encounterType == 0) and (curMob == None):
                         await sendBack("You have encounter a monster")
                         curPlayer.encounterUp(0)
                         #print(curPlayer.encounter)
@@ -251,7 +273,7 @@ async def on_message(message):
                         curMob = monster.NewMonster(monsterIndex)
                         stat = curMob.showStat()
                         await sendBack(stat)
-                    elif encounterType == 1:
+                    elif (encounterType == 1) and (curMob == None):
                         await sendBack("You have encounter a merchant")
                         curPlayer.encounterUp(1)
 
@@ -270,7 +292,7 @@ async def on_message(message):
                       
                         values = curShop.showValue()
                         await sendBack(values)
-                    elif encounterType == 2:
+                    elif (encounterType == 2) and (curMob == None):
                         curPlayer.encounterUp(2)
                         typeOfEvent = random.randint(1, 100)%5
                         val = random.randint(1,5)
@@ -409,6 +431,9 @@ async def on_message(message):
             if msg.startswith('$run'):
                 if curMob == None:
                     await sendBack("There is nothing to escape from...")
+
+                elif (curMob.getLevel() == 999):
+                    await sendBack("You cant run from a boss fight!")
 
                 else:
                     playerSpeed = curPlayer.getSPD()

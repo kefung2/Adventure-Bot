@@ -138,7 +138,7 @@ healingList = [
 
   {
     "itemName" : "red-cow drink",
-    "id" : "speed",
+    "id" : "Speed",
     "value" : 5,
     "effect" : "Increase speed by 5"
   }
