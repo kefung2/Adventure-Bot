@@ -12,6 +12,7 @@ monsterList = [
   },
   {    
     "name": "Skeleton",
+    "level" : 2,
     "hp": 8,
     "atk": 2,
     "deff": 6,
@@ -22,6 +23,7 @@ monsterList = [
   },
   {    
     "name": "Slime",
+    "level" : 1,
     "hp": 3,
     "atk": 5,
     "deff": 1,
@@ -32,6 +34,7 @@ monsterList = [
   },
   {
     "name": "Slime",
+    "level" : 1,
     "hp": 3,
     "atk": 1,
     "deff": 10,
@@ -42,6 +45,7 @@ monsterList = [
   },
   {
     "name": "Wolf",
+    "level" : 2,
     "hp": 10,
     "atk": 5,
     "deff": 1,
@@ -52,6 +56,7 @@ monsterList = [
   },
   {
     "name": "Werewolf",
+    "level" : 3,
     "hp": 8,
     "atk": 6,
     "deff": 5,
@@ -62,6 +67,7 @@ monsterList = [
   },
   {
     "name": "Zombie",
+    "level" : 2,
     "hp": 9,
     "atk": 1,
     "deff": 1,
@@ -72,6 +78,7 @@ monsterList = [
   },
   {
     "name": "Snake",
+    "level" : 3,
     "hp": 10,
     "atk": 4,
     "deff": 3,
@@ -82,6 +89,7 @@ monsterList = [
   },
   {
     "name": "Obake",
+    "level" : 4,
     "hp": 4,
     "atk": 10,
     "deff": 2,
@@ -92,6 +100,7 @@ monsterList = [
   },
   {
     "name": "Dragon",
+    "level" : 5,
     "hp": 20,
     "atk": 10,
     "deff": 10,
@@ -105,6 +114,7 @@ monsterList = [
 class NewMonster:
   def __init__(self,num):
     self.name = monsterList[num]['name']
+    self.level = monsterList[num]['level']
     self.hp = monsterList[num]['hp']
     self.curhp = monsterList[num]['hp']
     self.atk = monsterList[num]['atk']
@@ -134,6 +144,8 @@ class NewMonster:
     return(self.curhp <= 0)
 
   ## Getter / Setter
+  def getLevel(self):
+    return self.level
 
   def getEXP(self):
     return self.exp

@@ -211,7 +211,7 @@ async def on_message(message):
                         "Monster is blocking your way, fight it or run from it"
                     )
                 else:
-                    if curPlayer.getEncounterCount() >= storyEncounter:
+                    if curPlayer.getEncounterCount() > storyEncounter:
                         endgame()
                         await sendBack("Thank you for playing!")
                         return
@@ -222,18 +222,32 @@ async def on_message(message):
                         pass
                     elif (curPlayer.getEncounterCount()%5 == 0) or (curPlayer.getEncounterCount()%5 == 0.5):
                         await sendBack(f"current count: {curPlayer.getEncounterCount()}")
+                        ##  BOSS FIGHT HERE,    every 5th fight  
 
                     encounterType = randomEncounter()
                     if encounterType == 0:
                         await sendBack("You have encounter a monster")
-                        #TO-DO: ADD BOSS AFTER 10 ENCOUNTER
-                        #pending boss fight
                         curPlayer.encounterUp(0)
                         #print(curPlayer.encounter)
                         monsterIndex = random.randint(
                             0,
                             len(monster.monsterList) - 1)
                         #print(monsterIndex)
+                        playerLevel = curPlayer.getLevel()
+                        while True:
+                            # print("In loop\n"
+                            #     f"Player Level: {playerLevel}\n"
+                            #     f"Moonster Info: Name: {monster.monsterList[monsterIndex]['name']}, LV: {monster.monsterList[monsterIndex]['level']}\n"
+                            # )
+                            if playerLevel >= monster.monsterList[monsterIndex]['level']:
+                                # print("Pass")
+                                break
+                            else:
+                                # print("reroll")
+                                monsterIndex = random.randint(
+                                    0,
+                                    len(monster.monsterList) - 1) 
+
                         curMob = monster.NewMonster(monsterIndex)
                         stat = curMob.showStat()
                         await sendBack(stat)
@@ -566,5 +580,4 @@ async def on_message(message):
 
 #keep_alive()
 #client.run(os.environ['TOKEN'])
-
 
