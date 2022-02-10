@@ -20,7 +20,6 @@ class NewPlayer:
 
   def showStat(self):
     return(
-          "=====================================\n"
           f"Name : {self.name}\n"
           f"HP : {self.curhp} / {self.hp}\n"
           f"LV : {self.level}\n"
@@ -30,7 +29,6 @@ class NewPlayer:
           f"EXP : {self.exp}\n"
           f"Crit Chance : {self.critMod * 100}%\n"
           f"crit Damage : {self.critDamage * 100}%\n"
-          "=====================================\n"
           )
 
   def takeDamage(self, damage):
