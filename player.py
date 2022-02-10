@@ -98,6 +98,9 @@ class NewPlayer:
   def getCritDamage(self):
     return self.critDamage
 
+  def getLevel(self):
+    return self.level
+
   def levelUp(self):
     self.level += 1
     self.hp += 1
