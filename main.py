@@ -224,8 +224,8 @@ async def on_message(message):
                     if curPlayer.getEncounterCount() == 0 or curPlayer.getEncounterCount() == 0.5:
                         pass
                     elif (curPlayer.getEncounterCount()%5 == 0) or (curPlayer.getEncounterCount()%5 == 0.5):
-                        if(curPlayer.getEncounterCount() == 25) or (curPlayer.getEncounterCount() == 25.5):
-                            await sendBack("You have reach the end")
+                        if(curPlayer.getEncounterCount() == storyEncounter) or (curPlayer.getEncounterCount() == (storyEncounter+ 0.5)):
+                            await sendBack("You have reach the final boss!")
                             curPlayer.encounterUp(0)
                             curMob = boss.NewBoss(4)
                             message = curMob.showMessage()
@@ -541,7 +541,7 @@ async def on_message(message):
                     del curShop
                     curShop = None
 
-                elif(curShop.getItemId(item) == "MaxHP"):
+                elif(curShop.getItemId(item) == "maxHP"):
                     itemvalue = curShop.getItemValue(item)
                     await sendBack(f"Increase max health by {itemvalue}")
                     curPlayer.setMaxHp(itemvalue)

@@ -9,42 +9,64 @@ weaponList = [
 
   {
     "itemName" : "Knife",
-    "id" : "critR",
-    "value" : 100,
-    "effect" : "Increase crit rate by 1"
-
+    "id" : "atk",
+    "value" : 1,
+    "effect" : "Increase attack by 1"
   },
 
   {
     "itemName" : "Sword",
-    "id" : "critD",
-    "value" : 50,
-    "effect" : "Increase crit damage by 50"
+    "id" : "atk",
+    "value" : 3,
+    "effect" : "Increase attack by 2"
 
-  },
-
-  {
-    "itemName" : "Pan",
-    "id" : "critD",
-    "value" : 50,
-    "effect" : "Increase crit damage by 50"
-   
   },
 
   {
     "itemName" : "Greatsword",
     "id" : "atk",
-    "value" : 3,
+    "value" : 5,
     "effect" : "Increase attack by 3"
 
   },
 
   {
+    "itemName" : "Hero's blade",
+    "id" : "atk",
+    "value" : 5,
+    "effect" : "Increase attack by 5"
+
+  },
+
+  {
+    "itemName" : "Kunais",
+    "id" : "critR",
+    "value" : 0.05,
+    "effect" : "Increase crit rate by 5%"
+
+  },
+
+  {
+    "itemName" : "Shurikens",
+    "id" : "critR",
+    "value" : 0.05,
+    "effect" : "Increase crit rate by 5%"
+
+  },
+
+  {
+    "itemName" : "Pan for wacking",
+    "id" : "critD",
+    "value" : 5,
+    "effect" : "Increase crit damage by 5%"
+   
+  },
+
+  {
     "itemName" : "Katana",
     "id" : "critD",
-    "value" : 50,
-    "effect" : "Increase crit damage by 50%"
-
+    "value" : 10,
+    "effect" : "Increase crit damage by 10%"
   }
 
 ]
@@ -62,25 +84,18 @@ armorList = [
 
   {
     "itemName" : "Shorts",
-    "id" : "MaxHP",
+    "id" : "def",
     "value" : 1,
-    "effect" : "Increase Max HP by 1"
+    "effect" : "Increase defense by 1"
 
   },
   
-  {
-    "itemName" : "Pan for the booty",
-    "id" : "MaxHP",
-    "value" : 5,
-    "effect" : "Increase Max HP by 5"
-
-  },
 
   {
     "itemName" : "Helmet",
-    "id" : "MaxHP",
+    "id" : "def",
     "value" : 2,
-    "effect" : "Increase HP by 2"
+    "effect" : "Increase defense by 2"
 
   },
 
@@ -89,6 +104,46 @@ armorList = [
     "id" : "def",
     "value" : 3,
     "effect" : "Increase defense by 3"
+
+  },
+
+  {
+    "itemName" : "Pan for the booty",
+    "id" : "def",
+    "value" : 3,
+    "effect" : "Increase defense by 3"
+
+  },
+
+  {
+    "itemName" : "Chainmail",
+    "id" : "def",
+    "value" : 5,
+    "effect" : "Increase defense by 5"
+
+  },
+
+  {
+    "itemName" : "Lucky charm",
+    "id" : "maxHP",
+    "value" : 1,
+    "effect" : "Increase Max HP by 1"
+
+  },
+
+  {
+    "itemName" : "Magical Bracelet",
+    "id" : "maxHP",
+    "value" : 3,
+    "effect" : "Increase Max HP by 3"
+
+  },
+
+  {
+    "itemName" : "Holy Armor",
+    "id" : "maxHP",
+    "value" : 5,
+    "effect" : "Increase Max HP by 5"
 
   },
   
@@ -137,11 +192,42 @@ healingList = [
   },
 
   {
+    "itemName" : "Strange pill",
+    "id" : "Speed",
+    "value" : 1,
+    "effect" : "Increase speed by 1"
+  },
+
+  {
     "itemName" : "red-cow drink",
     "id" : "Speed",
-    "value" : 5,
-    "effect" : "Increase speed by 5"
-  }
+    "value" : 3,
+    "effect" : "Increase speed by 3"
+  },
+
+
+  {
+      "itemName" : "Adrenaline",
+      "id" : "Speed",
+      "value" : 5,
+      "effect" : "Increase speed by 5"
+  },
+
+#rng buffs
+
+  {
+      "itemName" : "Suspicious herb (Good luck)",
+      "id" : "Speed",
+      "value" : 5,
+      "effect" : "Suddenly you feel hyper!! Increase speed by 10!!"
+  },
+
+  {
+      "itemName" : "Suspicious herb (Good luck)",
+      "id" : "Speed",
+      "value" : -5,
+      "effect" : "You started to feel sore... Decrease speed by -5"
+  },
 
 
 ]
