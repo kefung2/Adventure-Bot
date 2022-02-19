@@ -1,4 +1,5 @@
 import os
+from turtle import color
 import discord
 import monster
 import player
@@ -36,7 +37,6 @@ def helpMenu():
         "$buy : buy item in shop: $buy [item in slot]\n"
         "$monStat : see the current monster stat\n"
         "$stat : see your oown current stat\n"
-        "$levelUp : Use this Comment to level up. Every 8 exp point give you a level, which give you more stat\n"
         "$reset : reset the whole world\n"
         "$end : end the game\n")
 
@@ -45,7 +45,7 @@ def playStory():
     return ("In the Kingdom of Hyakki, there is a princess name Ayame, who is crownd the most beautiful lady in the kingdom. One day the Demon King Teeto, has caught eye on the princess, and kidnap her away. The king has summon a hero from a different world in order to save his daughter. Now hero your jounery has begin.")
 
 def endStory():
-    return("You have successfully defeat the Deam King, and bring princess Ayame back to the kingdom safely. As a reward the King offer the marriage of princess Ayame to you. You give it some thought and decide to deline the offer, and in exchange you want a huge amount of gold instead. The King have respected you decision and give huge amount of gold and a land for you to live in. As now you mission of saving the princess has been fulfill, and you have a place to stay in this world, so you decide to move on with your own goal. To Build a Harem of Beautiful Girl. THE END")
+    return("You have successfully defeat the Demom King, and bring princess Ayame back to the kingdom safely. As a reward the King offer the marriage of princess Ayame to you. You give it some thought and decide to deline the offer, and in exchange you want a huge amount of gold instead. The King have respected you decision and give huge amount of gold and a land for you to live in. As now you mission of saving the princess has been fulfill, and you have a place to stay in this world, so you decide to move on with your own goal. To Build a Harem of Beautiful Girl. THE END")
 
 def endgame():
     global curPlayer, curMob, curShop, gameState, previousEnc
@@ -65,6 +65,15 @@ def checkPlayerCreation():
     else:
         return True
 
+def checkPlayerDeath():
+    if curPlayer.isDead():
+        endgame()
+        return True
+
+def checkPlayerLevelUp():
+    if curPlayer.getEXP() >= 4:
+        curPlayer.levelUp()
+        return True
 
 def checkMobAlive():
     if curMob == None:
@@ -74,11 +83,27 @@ def checkMobAlive():
         print("true")
         return True
 
+def playerStat():
+    stat = curPlayer.showStat()
+    imgName = "Player.png"
+    img = discord.File("Image\Player.png", filename=imgName)
+    embed = discord.Embed(title="Player Stat", description=stat, color=discord.Color.dark_blue())
+    embed.set_image(url=f"attachment://{imgName}")
+    return img, embed
+
+def monsterStat():
+    stat = curMob.showStat()
+    imgName = "Monster.png"
+    img = discord.File(curMob.getPATH(), filename=imgName)
+    embed = discord.Embed(title="Monster Stat", description=stat, color=discord.Color.dark_red())
+    embed.set_image(url=f"attachment://{imgName}")
+    return img, embed
+
 def playerDamagePhase(crit):
     playerDamage = curPlayer.getATK() - curMob.getDEF()
     #if Monster Defend is too high, you will always do 1 damage and vice versa
     print("Damage: ", playerDamage)
-    if playerDamage < 0:
+    if playerDamage <= 0:
         playerDamage = 1
     if crit:
         playerDamage = round(playerDamage + (playerDamage * curPlayer.getCritDamage()))
@@ -97,7 +122,7 @@ def playerCritCheck():
 
 def monsterDamagePhase(crit):
     monsterDamage = curMob.getATK() - curPlayer.getDEF()
-    if monsterDamage < 0:
+    if monsterDamage <= 0:
         monsterDamage = 1
     if crit:
         monsterDamage = round(monsterDamage + (monsterDamage * curMob.getCritDamage()))
@@ -186,12 +211,13 @@ async def on_message(message):
                       curPlayer = player.NewPlayer(statList[1], statList[2],
                                                   statList[3], statList[4],
                                                   statList[5])
-                      stat = curPlayer.showStat()
-                      await sendBack(stat)
-              except:
+                      img, embed = playerStat()
+                      await sendBack(file=img, embed=embed)
+              except Exception as e:
                   await sendBack(
                       "Please follow the format $newPlayer [name] [hp] [attack] [defend] [speed]"
                   )
+                  print(e)
                   return
 
         if bool(checkPlayerCreation()):
@@ -249,8 +275,8 @@ async def on_message(message):
                                     len(monster.monsterList) - 1) 
 
                         curMob = monster.NewMonster(monsterIndex)
-                        stat = curMob.showStat()
-                        await sendBack(stat)
+                        img, embed = monsterStat()
+                        await sendBack(file=img, embed=embed)
                     elif encounterType == 1:
                         await sendBack("You have encounter a merchant")
                         curPlayer.encounterUp(1)
@@ -269,7 +295,8 @@ async def on_message(message):
                         print(f"printing item3 {item3}")
                       
                         values = curShop.showValue()
-                        await sendBack(values)
+                        embed = discord.Embed(title="Shop", description=values, color=discord.Color.dark_green())
+                        await sendBack(embed=embed)
                     elif encounterType == 2:
                         curPlayer.encounterUp(2)
                         typeOfEvent = random.randint(1, 100)%5
@@ -277,30 +304,44 @@ async def on_message(message):
 
                         # using if else here because replit don't have python 3.10 
                         if typeOfEvent == 0 :
-                          await sendBack(f"You spend the night at a hotel, and rested pretty well. Heal by {val}")
+                          embed = discord.Embed(title="Good Night", description=f"You spend the night at a hotel, and rested pretty well. Heal by {val}", color=discord.Color.teal())
+                          await sendBack(embed=embed)
                           curPlayer.setHp(val)
                           stat = curPlayer.showStat()
-                          await sendBack(stat)
+
+                          img, playerEmbed = playerStat()
+                          await sendBack(file=img, embed=playerEmbed)
+
                         elif typeOfEvent == 1:
-                          await sendBack(f"You wonder into a lake and saw a woman taking a bath, and you were caught, so you run with all your might. As a result your speed go up by {val}")
+                          embed = discord.Embed(title="Lucky Pervert", description=f"You wonder into a lake and saw a woman taking a bath, and you were caught, so you run with all your might. As a result your speed go up by {val}", color=discord.Color.teal())
+                          await sendBack(embed=embed)
                           curPlayer.setSpd(val)
-                          stat = curPlayer.showStat()
-                          await sendBack(stat)
+
+                          img, playerEmbed = playerStat()
+                          await sendBack(file=img, embed=playerEmbed)
                         elif typeOfEvent == 2:
-                          await sendBack(f"You spend some time practicing you weapon and fightinng skill before resting for the night. As a result your attack went up by {val}")
+                          embed = discord.Embed(title="Keep up the swing", description=f"You spend some time practicing you weapon and fightinng skill before resting for the night. As a result your attack went up by {val}", color=discord.Color.teal())
+                          await sendBack(embed=embed)
                           curPlayer.setAtk(val)
-                          stat = curPlayer.showStat()
-                          await sendBack(stat)
+
+                          img, playerEmbed = playerStat()
+                          await sendBack(file=img, embed=playerEmbed)
                         elif typeOfEvent == 3:
-                          await sendBack(f"You spend some time maintance your armor, now it is better then ever. As a result your defend went up by {val}")
+                          embed = discord.Embed(title="Knight in shining armor, too shining", description=f"You spend some time maintance your armor, now it is better then ever. As a result your defend went up by {val}", color=discord.Color.teal())
+                          await sendBack(embed=embed)
                           curPlayer.setDef(val)
-                          stat = curPlayer.showStat()
-                          await sendBack(stat)
+
+                          img, playerEmbed = playerStat()
+                          await sendBack(file=img, embed=playerEmbed)
                         elif typeOfEvent == 4:
-                          await sendBack(f"You camp out for the night, and cook some mushroom you picked up, turns out those are the mushroom Demon King Teeto plant. You took {val} damage from eattinng it")
+                          embed = discord.Embed(title="Perfect Dinner", description=f"You camp out for the night, and cook some mushroom you picked up, turns out those are the mushroom Demon King Teeto plant. You took {val} damage from eattinng it", color=discord.Color.teal())
+                          await sendBack(embed=embed)
                           curPlayer.takeDamage(val)
-                          stat = curPlayer.showStat()
-                          await sendBack(stat)
+                          if checkPlayerDeath():
+                              await sendBack("YOU ARE DEAD !!!")
+                              return
+                          img, playerEmbed = playerStat()
+                          await sendBack(file=img, embed=playerEmbed)
                         else:
                           await sendBack("What a peaceful day!")
                         # match typeOfEvent:
@@ -355,8 +396,10 @@ async def on_message(message):
                             curPlayer.gainEXP(curMob.getEXP())
                             expGain = curMob.getEXP()
                             await sendBack(f"You gain {expGain} exp")
-                            stat = curPlayer.showStat()
-                            await sendBack(stat)
+                            if checkPlayerLevelUp():
+                                await sendBack("YOU LEVEL UP !!")
+                            img, playerEmbed = playerStat()
+                            await sendBack(file=img, embed=playerEmbed)
                             del curMob
                             curMob = None
                             return
@@ -366,9 +409,8 @@ async def on_message(message):
                             await sendBack(
                                 f"Monster fight back, and you took {monsterDamage} damage"
                             )
-                            if curPlayer.isDead():
+                            if checkPlayerDeath():
                                 await sendBack("YOU ARE DEAD!!!")
-                                endgame()
                                 return
                     else:
                         crit = monsterCritCheck()
@@ -376,9 +418,8 @@ async def on_message(message):
                         await sendBack(
                             f"The Monster attack, and you took {monsterDamage} damage"
                         )
-                        if curPlayer.isDead():
+                        if checkPlayerDeath:
                             await sendBack("YOU ARE DEAD!!!")
-                            endgame()
                             return
                         crit = playerCritCheck()
                         playerDamage = playerDamagePhase(crit)
@@ -390,17 +431,19 @@ async def on_message(message):
                             curPlayer.gainEXP(curMob.getEXP())
                             expGain = curMob.getEXP()
                             await sendBack(f"You gain {expGain} exp")
-                            stat = curPlayer.showStat()
-                            await sendBack(stat)
+                            if checkPlayerLevelUp():
+                                await sendBack("YOU LEVEL UP !!")
+                            img, playerEmbed = playerStat()
+                            await sendBack(file=img, embed=playerEmbed)
                             del curMob
                             curMob = None
                             return
                     try:
                       if not (curPlayer.isDead()) and not (curMob.isDead()):
-                          stat1 = curPlayer.showStat()
-                          await sendBack(stat1)
-                          stat2 = curMob.showStat()
-                          await sendBack(stat2)
+                          img, playerEmbed = playerStat()
+                          await sendBack(file=img, embed=playerEmbed)
+                          img, monsterEmbed = monsterStat()
+                          await sendBack(file=img, embed=monsterEmbed)
                     except:
                         print("Player or Monster is dead") 
                         return
@@ -448,8 +491,8 @@ async def on_message(message):
                         crit = monsterCritCheck()
                         monsterDamage = monsterDamagePhase(crit)
                         await sendBack(f"You took {monsterDamage} damage")
-                        stat = curPlayer.showStat()
-                        await sendBack(stat)
+                        img, playerEmbed = playerStat()
+                        await sendBack(file=img, embed=playerEmbed)
                         if curPlayer.isDead():
                             await sendBack("YOU ARE DEAD!!!")
                             endgame()
@@ -470,8 +513,8 @@ async def on_message(message):
                     itemvalue = curShop.getItemValue(item)
                     await sendBack(f"Increase attack stat by {itemvalue}")
                     curPlayer.setAtk(itemvalue)
-                    stat=curPlayer.showStat()
-                    await sendBack(stat)
+                    img, playerEmbed = playerStat()
+                    await sendBack(file=img, embed=playerEmbed)
                     await sendBack("Good luck on your adventure")
                     del curShop
                     curShop = None
@@ -480,8 +523,8 @@ async def on_message(message):
                     itemvalue = curShop.getItemValue(item)
                     await sendBack(f"Increase defense stat by {itemvalue}")
                     curPlayer.setDef(itemvalue)
-                    stat=curPlayer.showStat()
-                    await sendBack(stat)
+                    img, playerEmbed = playerStat()
+                    await sendBack(file=img, embed=playerEmbed)
                     await sendBack("Good luck on your adventure")
                     del curShop
                     curShop = None
@@ -490,8 +533,8 @@ async def on_message(message):
                     itemvalue = curShop.getItemValue(item)
                     await sendBack(f"Recover hp by {itemvalue}")
                     curPlayer.setHp(itemvalue)
-                    stat=curPlayer.showStat()
-                    await sendBack(stat)
+                    img, playerEmbed = playerStat()
+                    await sendBack(file=img, embed=playerEmbed)
                     await sendBack("Good luck on your adventure")
                     del curShop
                     curShop = None
@@ -500,8 +543,8 @@ async def on_message(message):
                     itemvalue = curShop.getItemValue(item)
                     await sendBack(f"Increase crit rate by {itemvalue}")
                     curPlayer.setCritR(itemvalue)
-                    stat=curPlayer.showStat()
-                    await sendBack(stat)
+                    img, playerEmbed = playerStat()
+                    await sendBack(file=img, embed=playerEmbed)
                     await sendBack("Good luck on your adventure")
                     del curShop
                     curShop = None
@@ -510,8 +553,8 @@ async def on_message(message):
                     itemvalue = curShop.getItemValue(item)
                     await sendBack(f"Increase crit damage by {itemvalue}")
                     curPlayer.setCritD(itemvalue)
-                    stat=curPlayer.showStat()
-                    await sendBack(stat)
+                    img, playerEmbed = playerStat()
+                    await sendBack(file=img, embed=playerEmbed)
                     await sendBack("Good luck on your adventure")
                     del curShop
                     curShop = None
@@ -520,8 +563,8 @@ async def on_message(message):
                     itemvalue = curShop.getItemValue(item)
                     await sendBack(f"Increase max health by {itemvalue}")
                     curPlayer.setMaxHp(itemvalue)
-                    stat=curPlayer.showStat()
-                    await sendBack(stat)
+                    img, playerEmbed = playerStat()
+                    await sendBack(file=img, embed=playerEmbed)
                     await sendBack("Good luck on your adventure")
                     del curShop
                     curShop = None
@@ -530,8 +573,8 @@ async def on_message(message):
                     itemvalue = curShop.getItemValue(item)
                     await sendBack(f"Increase speed by {itemvalue}")
                     curPlayer.setSpd(itemvalue)
-                    stat=curPlayer.showStat()
-                    await sendBack(stat)
+                    img, playerEmbed = playerStat()
+                    await sendBack(file=img, embed=playerEmbed)
                     await sendBack("Good luck on your adventure")
                     del curShop
                     curShop = None
@@ -539,24 +582,14 @@ async def on_message(message):
 
             # Commend to see current monster stat
             if msg.startswith('$monStat'):
-                stat = curMob.showStat()
-                await sendBack(stat)
+                img, monsterEmbed = monsterStat()
+                await sendBack(file=img, embed=monsterEmbed)
 
 
             #commend to see yoour stat
             if msg.startswith('$stat'):
-                stat = curPlayer.showStat()
-                await sendBack(stat)
-
-            #commend to see Level up
-            if msg.startswith('$levelUp'):
-                if curPlayer.getEXP() >= 8:
-                    await sendBack("You level Up")
-                    curPlayer.levelUp()
-                    stat = curPlayer.showStat()
-                    await sendBack(stat)
-                else:
-                    await sendBack("Not enough exp to level up")
+                img, playerEmbed = playerStat()
+                await sendBack(file=img, embed=playerEmbed)
 
             # Comment to reset everything
             if msg.startswith('$reset'):
@@ -580,4 +613,3 @@ async def on_message(message):
 
 #keep_alive()
 #client.run(os.environ['TOKEN'])
-

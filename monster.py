@@ -8,7 +8,8 @@ monsterList = [
     "spd": 1,
     "critMod" : 0,
     "critDamage" : 0,
-    "exp": 1
+    "exp": 1,
+    "PATH": "Image\Slime1.png"
   },
   {    
     "name": "Skeleton",
@@ -19,7 +20,8 @@ monsterList = [
     "spd": 3,
     "critMod" : .05,
     "critDamage" : .2,
-    "exp": 2
+    "exp": 2,
+    "PATH": "Image\Skeleton.jpg"
   },
   {    
     "name": "Slime",
@@ -30,7 +32,8 @@ monsterList = [
     "spd": 3,
     "critMod" : .2,
     "critDamage" : .1,
-    "exp": 1
+    "exp": 1,
+    "PATH": "Image\Slime2.png"
   },
   {
     "name": "Slime",
@@ -41,7 +44,8 @@ monsterList = [
     "spd": 1,
     "critMod" : .01,
     "critDamage" : 3,
-    "exp": 1
+    "exp": 1,
+    "PATH": "Image\Slime3.png"
   },
   {
     "name": "Wolf",
@@ -52,7 +56,8 @@ monsterList = [
     "spd": 6,
     "critMod" : .2,
     "critDamage" : .25,
-    "exp": 2
+    "exp": 2,
+    "PATH": "Image\Wolf.png"
   },
   {
     "name": "Werewolf",
@@ -63,7 +68,8 @@ monsterList = [
     "spd": 5,
     "critMod" : .25,
     "critDamage" : .3,
-    "exp": 3
+    "exp": 3,
+    "PATH": "Image\Werewolf.png"
   },
   {
     "name": "Zombie",
@@ -74,7 +80,8 @@ monsterList = [
     "spd": 2,
     "critMod" : .1,
     "critDamage" : 2,
-    "exp": 2
+    "exp": 2,
+    "PATH": "Image\Zombie.png"
   },
   {
     "name": "Snake",
@@ -85,7 +92,8 @@ monsterList = [
     "spd": 4,
     "critMod" : .2,
     "critDamage" : .5,
-    "exp": 3
+    "exp": 3,
+    "PATH": "Image\snake.jpg"
   },
   {
     "name": "Obake",
@@ -96,7 +104,8 @@ monsterList = [
     "spd": 9,
     "critMod" : .05,
     "critDamage" : .5,
-    "exp": 4
+    "exp": 4,
+    "PATH": "Image\Ghost.jpg"
   },
   {
     "name": "Dragon",
@@ -107,7 +116,8 @@ monsterList = [
     "spd": 10,
     "critMod" : .1,
     "critDamage" : 2,
-    "exp": 5
+    "exp": 5,
+    "PATH": "Image\Dragon.png"
   },
 ]
 
@@ -123,22 +133,23 @@ class NewMonster:
     self.critMod = monsterList[num]['critMod']
     self.critDamage = monsterList[num]['critDamage']
     self.exp = monsterList[num]['exp']
+    self.path = monsterList[num]['PATH']
     
   def showStat(self):
     return(
-      "=====================================\n"
       f"Name : {self.name}\n"
       f"HP : {self.curhp} / {self.hp}\n"
       f"ATK : {self.atk}\n"
       f"DEF : {self.deff}\n"
       f"SPD : {self.spd}\n"
-      "=====================================\n"
       )
   
   def takeDamage(self, damage):
     self.curhp = self.curhp - damage
     return(f"You did -{damage} damage")
 
+  def getPATH(self):
+    return self.path
 
   def isDead(self):
     return(self.curhp <= 0)
