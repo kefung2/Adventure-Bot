@@ -75,6 +75,7 @@ def checkMobAlive():
         print("true")
         return True
 
+
 def playerDamagePhase(crit):
     playerDamage = curPlayer.getATK() - curMob.getDEF()
     #if Monster Defend is too high, you will always do 1 damage and vice versa
@@ -130,6 +131,51 @@ def randomEncounter():
     elif 1 <= roll <= 20:
         print(roll, "event")
         return 2
+
+def turneffects():
+    #testing
+    bossname = curMob.getName()
+    print(f"Activating effect for  {bossname}")
+
+    if(bossname == "Final Boss Demonic Teeto"):
+        hitshroom = random.randint(0, 2)
+        if(hitshroom == 1):
+            print("You step on a shroom")
+            curPlayer.playerdmg(4)
+    elif(bossname == "Gatekeeper"):
+        print("Turn back!")
+    elif(bossname == "Guardian"):
+        curMob.buffBoss('atk', 3)
+        print(f"Guardian's attack increase by 3")
+    elif(bossname == "Dark Knight"):
+        healamount = random.randint(1,4)
+        curMob.buffBoss('hp', healamount)
+        print(f"The Knight heals for {healamount}")
+    elif(bossname == "Unknown"):
+        shredamount = random.randint(1,3)
+        curPlayer.setDef(-shredamount)
+        print(f"The unknown shreds your armor by {shredamount}")
+    elif(bossname == "Elementalist"):
+        element = random.randint(0,3)
+        if(element == 0):  #fire
+            print("Elementalist use fire element")
+            curMob.buffBoss('atk', 2)
+            print("Elementalist gains attack")
+        if(element == 1):  #water
+            print("Elementalist use water element")
+            curMob.buffBoss('hp', 5)
+            print("Elementalist heals")
+        if(element == 2):  #earth
+            print("Elementalist use earth element")
+            curMob.buffBoss('def', 2)
+            print("Elementalist gains defense")
+        if(element == 3):  #air
+            print("Elementalist use wind element")
+            curMob.buffBoss('speed', 2)
+            curMob.buffBoss('crit', 0.1)
+            print("Elementalist gains speed and 10 percent crit rate")
+            
+
 
 ######################################################################################################
 
@@ -227,7 +273,7 @@ async def on_message(message):
                         if(curPlayer.getEncounterCount() == storyEncounter) or (curPlayer.getEncounterCount() == (storyEncounter+ 0.5)):
                             await sendBack("You have reach the final boss!")
                             curPlayer.encounterUp(0)
-                            curMob = boss.NewBoss(4)
+                            curMob = boss.NewBoss(len(boss.miniBossList))
                             message = curMob.showMessage()
                             stat = curMob.showStat()
                             await sendBack(message)
@@ -237,9 +283,13 @@ async def on_message(message):
                             ##  BOSS FIGHT HERE,    every 5th fight  
                             await sendBack(f"current count: {curPlayer.getEncounterCount()}")
                             await sendBack("You encounter a boss!!!")
-                            curPlayer.encounterUp(0)
                             minibossIndex = random.randint(0, len(boss.miniBossList) - 2)
+
                             curMob = boss.NewBoss(minibossIndex)
+                            bossname = curMob.getName()
+                            print(f"The boss name is {bossname}")
+                            curMob.bossScaling(curPlayer.getEncounterCount())
+                            curPlayer.encounterUp(0)
                             message = curMob.showMessage()
                             stat = curMob.showStat()
                             await sendBack(message)
@@ -282,13 +332,14 @@ async def on_message(message):
                         item3r = random.randint(0, len(shop.healingList) -1 )
 
                         curShop = shop.NewShop(item1r,item2r,item3r)
-                        item1 = curShop.getItem(1)
-                        item2 = curShop.getItem(2)
-                        item3 = curShop.getItem(3)
 
-                        print(f"printing item1 {item1}")
-                        print(f"printing item2 {item2}")
-                        print(f"printing item3 {item3}")
+                        #item1 = curShop.getItem(1)
+                        #item2 = curShop.getItem(2)
+                        #item3 = curShop.getItem(3)
+
+                        #print(f"printing item1 {item1}")
+                        #print(f"printing item2 {item2}")
+                        #print(f"printing item3 {item3}")
                       
                         values = curShop.showValue()
                         await sendBack(values)
@@ -383,21 +434,29 @@ async def on_message(message):
                             curMob = None
                             return
                         else:
+                            if(curMob.getLevel() == 999):
+                                turneffects()
+
                             crit = monsterCritCheck()
                             monsterDamage = monsterDamagePhase(crit)
                             await sendBack(
                                 f"Monster fight back, and you took {monsterDamage} damage"
                             )
+                            
                             if curPlayer.isDead():
                                 await sendBack("YOU ARE DEAD!!!")
                                 endgame()
                                 return
                     else:
+                        if(curMob.getLevel() == 999):
+                                turneffects()
+
                         crit = monsterCritCheck()
                         monsterDamage = monsterDamagePhase(crit)
                         await sendBack(
                             f"The Monster attack, and you took {monsterDamage} damage"
                         )
+                        
                         if curPlayer.isDead():
                             await sendBack("YOU ARE DEAD!!!")
                             endgame()
@@ -605,4 +664,3 @@ async def on_message(message):
 
 #keep_alive()
 #client.run(os.environ['TOKEN'])
-

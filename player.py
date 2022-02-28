@@ -113,7 +113,10 @@ class NewPlayer:
     self.atk += update
 
   def setDef(self, update):
-    self.deff += update
+    if(self.deff + update < 0):
+      self.deff == 0
+    else:
+      self.deff += update
 
   def setSpd(self, update):
     self.spd += update
@@ -133,3 +136,7 @@ class NewPlayer:
   def setMaxHp(self, update):
     self.hp += update
     self.curhp += update
+
+  def playerdmg(self, dmg):
+    self.curhp -= dmg
+  

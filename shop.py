@@ -41,7 +41,7 @@ weaponList = [
   {
     "itemName" : "Kunais",
     "id" : "critR",
-    "value" : 0.05,
+    "value" : 5,
     "effect" : "Increase crit rate by 5%"
 
   },
@@ -49,7 +49,7 @@ weaponList = [
   {
     "itemName" : "Shurikens",
     "id" : "critR",
-    "value" : 0.05,
+    "value" : 5,
     "effect" : "Increase crit rate by 5%"
 
   },
@@ -213,21 +213,7 @@ healingList = [
       "effect" : "Increase speed by 5"
   },
 
-#rng buffs
-
-  {
-      "itemName" : "Suspicious herb (Good luck)",
-      "id" : "Speed",
-      "value" : 5,
-      "effect" : "Suddenly you feel hyper!! Increase speed by 10!!"
-  },
-
-  {
-      "itemName" : "Suspicious herb (Good luck)",
-      "id" : "Speed",
-      "value" : -5,
-      "effect" : "You started to feel sore... Decrease speed by -5"
-  },
+#rng buffs - maybe new ID for print out
 
 
 ]
@@ -239,11 +225,9 @@ class NewShop:
     b = armorList[item2]
     c = healingList[item3]
 
-
-
-    print(f"printing list a {a}")
-    print(f"printing list b {b}")
-    print(f"printing list c {c}")
+    #print(f"printing list a {a}")
+    #print(f"printing list b {b}")
+    #print(f"printing list c {c}")
 
     self.shop = {
       1:a,

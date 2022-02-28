@@ -164,3 +164,5 @@ class NewMonster:
   
   def getCritDamage(self):
     return self.critDamage
+
+  
